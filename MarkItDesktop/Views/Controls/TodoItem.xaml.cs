@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace MarkItDesktop.Views
 {
     /// <summary>
-    /// Interaction logic for MainPage.xaml
+    /// Interaction logic for TodoItem.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class TodoItem : UserControl
     {
-        public MainPage()
+        public TodoItem()
         {
             InitializeComponent();
         }

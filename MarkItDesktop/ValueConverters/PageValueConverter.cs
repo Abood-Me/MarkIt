@@ -1,6 +1,6 @@
 ﻿using MarkItDesktop.Models;
 using MarkItDesktop.ViewModels;
-using MarkItDesktop.Views.Pages;
+using MarkItDesktop.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,12 +21,16 @@ namespace MarkItDesktop.ValueConverters
             switch (page)
             {
                 case ApplicationPage.LoginPage:
+                    // TODO : Change Pages to have generic ViewModel type
                     return new LoginPage()
                     {
                         DataContext = new LoginViewModel()
                     };
                 case ApplicationPage.MainPage:
-                    return new MainPage();
+                    return new MainPage()
+                    {
+                        DataContext = new MainViewModel()
+                    };
                 default:
                     Debugger.Break();
                     return null;

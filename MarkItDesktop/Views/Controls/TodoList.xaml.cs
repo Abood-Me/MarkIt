@@ -3,11 +3,11 @@
 namespace MarkItDesktop.Views
 {
     /// <summary>
-    /// Interaction logic for LoginPage.xaml
+    /// Interaction logic for TodoList.xaml
     /// </summary>
-    public partial class LoginPage : Page
+    public partial class TodoList : UserControl
     {
-        public LoginPage()
+        public TodoList()
         {
             InitializeComponent();
         }

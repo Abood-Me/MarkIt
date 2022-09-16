@@ -8,11 +8,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="300" Width="500">
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
             
-            <Frame Content="{Binding CurrentPage, 
-                Converter={x:Static converters:PageValueConverter.Instance}}" 
-                              NavigationUIVisibility="Hidden"/>
-        </ScrollViewer>
+        <Frame Content="{Binding CurrentPage, 
+            Converter={x:Static converters:PageValueConverter.Instance}}" 
+                            NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
