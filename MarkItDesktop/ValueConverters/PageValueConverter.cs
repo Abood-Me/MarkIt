@@ -12,10 +12,9 @@ using System.Windows.Data;
 
 namespace MarkItDesktop.ValueConverters
 {
-    public class PageValueConverter : IValueConverter
+    public class PageValueConverter : BaseValueConverter<PageValueConverter>
     {
-        public static PageValueConverter Instance = new();
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             ApplicationPage page = (ApplicationPage)value;
             switch (page)
@@ -37,7 +36,7 @@ namespace MarkItDesktop.ValueConverters
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
