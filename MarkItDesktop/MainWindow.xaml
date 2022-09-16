@@ -4,9 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MarkItDesktop"
+        xmlns:converters="clr-namespace:MarkItDesktop.ValueConverters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="300" Width="500">
     <Grid>
-
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            
+            <Frame Content="{Binding CurrentPage, 
+                Converter={x:Static converters:PageValueConverter.Instance}}" 
+                              NavigationUIVisibility="Hidden"/>
+        </ScrollViewer>
     </Grid>
 </Window>
