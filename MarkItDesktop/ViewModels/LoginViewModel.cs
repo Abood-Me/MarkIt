@@ -10,8 +10,39 @@ namespace MarkItDesktop.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+
+        private string? _username;
+
+        public string? Username
+        {
+            get => _username;
+            set 
+            { 
+                _username = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string? _password;
+
+        public string? Password
+        {
+            get => _password;
+            set 
+            { 
+                _password = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+
+
+        #region Comamnds
+
         public ICommand LoginCommand { private set; get; }
 
+        #endregion
         public LoginViewModel()
         {
             LoginCommand = new RelayComamnd(Login);
