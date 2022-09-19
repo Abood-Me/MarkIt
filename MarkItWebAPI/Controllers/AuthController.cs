@@ -1,5 +1,5 @@
-﻿using MarkItWebAPI.Data;
-using MarkItWebAPI.Models;
+﻿using MarkIt.Common.Models;
+using MarkItWebAPI.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -81,7 +81,17 @@ namespace MarkItWebAPI.Controllers
             
             JwtSecurityTokenHandler tokenHandler = new();
             JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
-            return Ok(tokenHandler.WriteToken(token));
+            return Ok(
+                new APIResponseModel<LoginResponseModel>
+                {
+                    Succeeded = true,
+                    Response = new()
+                    {
+                        Username = user.UserName,
+                        Email = user.Email,
+                        Token = tokenHandler.WriteToken(token)
+                    },
+                });
         }
     }
 }

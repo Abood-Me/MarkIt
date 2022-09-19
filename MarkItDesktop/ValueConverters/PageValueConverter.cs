@@ -1,6 +1,7 @@
 ﻿using MarkItDesktop.Models;
 using MarkItDesktop.ViewModels;
 using MarkItDesktop.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,15 +21,17 @@ namespace MarkItDesktop.ValueConverters
             switch (page)
             {
                 case ApplicationPage.LoginPage:
-                    // TODO : Change Pages to have generic ViewModel type
+                    // TODO :
+                    // - Change Pages to have generic ViewModel type
+                    // - Add a GoToPage method with a ViewModel as argument
                     return new LoginPage()
                     {
-                        DataContext = new LoginViewModel()
+                        DataContext = App.AppHost.Services.GetRequiredService<LoginViewModel>()
                     };
                 case ApplicationPage.MainPage:
                     return new MainPage()
                     {
-                        DataContext = new MainViewModel()
+                        DataContext = App.AppHost.Services.GetRequiredService<MainViewModel>()
                     };
                 default:
                     Debugger.Break();
@@ -36,7 +39,7 @@ namespace MarkItDesktop.ValueConverters
             }
         }
 
-        public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object ConvertBack(object value, Type tsargetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

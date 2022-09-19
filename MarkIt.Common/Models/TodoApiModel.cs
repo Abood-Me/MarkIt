@@ -1,4 +1,4 @@
-﻿namespace MarkItWebAPI.Models
+﻿namespace MarkIt.Common.Models
 {
     public class TodoApiModel
     {

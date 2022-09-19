@@ -14,7 +14,7 @@ namespace MarkItDesktop.ViewModels
 
         #region Private members
 
-        private string _text;
+        private string _text = string.Empty;
 
         #endregion
 

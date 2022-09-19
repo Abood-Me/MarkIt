@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MarkItWebAPI.Models
+namespace MarkIt.Common.Models
 {
     public class RegisterApiModel
     {

@@ -1,5 +1,5 @@
-﻿using MarkItWebAPI.Data;
-using MarkItWebAPI.Models;
+﻿using MarkIt.Common.Models;
+using MarkItWebAPI.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -54,6 +54,55 @@ namespace MarkItWebAPI.Controllers
 
 
             return CreatedAtAction(nameof(GetTodo), new { id = todo.Id }, todo);
+        }
+
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult<Todo>> UpdateTodo(int id, [FromBody] TodoApiModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string? userId = _userManager.GetUserId(User);
+            ApplicationUser? user = await _userManager.Users
+                                        .Include(u => u.Todos)
+                                        .FirstOrDefaultAsync(u => u.Id == userId);
+            if (user is null)
+                return NotFound("User not found");
+
+            Todo? todo = user.Todos.FirstOrDefault(t => t.Id == id);
+            if (todo is null)
+                return NotFound("Todo not found");
+            todo.IsCompleted = model.IsCompleted;
+            todo.Text = model.Text;
+
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> RemoveTodo([FromRoute] int id)
+        {
+            string? userId = _userManager.GetUserId(User);
+            ApplicationUser? user = await _userManager.Users
+                                        .Include(u => u.Todos)
+                                        .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user is null)
+                return NotFound("User not found");
+            Todo? todo = user.Todos.FirstOrDefault(t => t.Id == id);
+
+            if (todo is null)
+                return NotFound("Todo not found");
+
+            user.Todos.Remove(todo);
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            return NoContent();
         }
 
         [HttpGet("{id:int}")]

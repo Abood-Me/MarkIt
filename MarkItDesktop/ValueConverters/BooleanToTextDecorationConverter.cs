@@ -13,7 +13,7 @@ namespace MarkItDesktop.ValueConverters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if((bool)value)
+            if(value is bool decorated && decorated)
             {
                 return TextDecorations.Strikethrough;
             }
