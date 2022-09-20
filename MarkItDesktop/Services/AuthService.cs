@@ -1,4 +1,5 @@
 ﻿using MarkIt.Common.Models;
+using MarkItDesktop.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace MarkItDesktop.Services
     public class AuthService : IAuthService
     {
         private readonly HttpClient _client;
+        private readonly ClientDbContext _dbContext;
 
-        public AuthService(HttpClient client)
+        public AuthService(HttpClient client, ClientDbContext dbContext)
         {
             this._client = client;
+            this._dbContext = dbContext;
         }
 
         public async Task<bool> LoginAsync(string username, string password)
@@ -32,7 +35,15 @@ namespace MarkItDesktop.Services
             if (content is null)
                 return false;
 
-            // TODO : Store in the database
+            _dbContext.Data.Add(
+                new ClientData()
+                {
+                    Username = content.Response!.Username,
+                    Email = content.Response.Email,
+                    Token = content.Response.Token
+                });
+
+            await _dbContext.SaveChangesAsync();
 
             return content.Succeeded;
         }

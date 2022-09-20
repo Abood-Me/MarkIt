@@ -61,6 +61,14 @@ namespace MarkItDesktop
             // Make sure the database is there and updated.
             ClientDbContext context = AppHost.Services.GetRequiredService<ClientDbContext>();
             context.Database.Migrate();
+
+            // TODO : Move this to AuthService and verify credentials via API
+            ClientData? data = context.Data.FirstOrDefault();
+            if(data is not null)
+            {
+                AppHost.Services.GetRequiredService<ApplicationViewModel>().CurrentPage = Models.ApplicationPage.MainPage;
+            }
+
         }
     }
 }

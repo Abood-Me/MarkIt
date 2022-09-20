@@ -10,11 +10,11 @@ namespace MarkItDesktop.Data
     public class ClientData
     {
         [Key]
-        public string Id { get; set; } = null!;
+        public int Id { get; set; }
         [Required]
-        public string Token { get; set; } = null!;
-        public string Username { get; set; } = null!;
+        public string Token { get; set; }
+        public string Username { get; set; }
 
-        public string Email { get; set; } = null!;
+        public string Email { get; set; }
     }
 }
