@@ -1,9 +1,12 @@
-﻿using System;
+﻿using MarkIt.Common.Models;
+using MarkItDesktop.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace MarkItDesktop.ViewModels
@@ -15,6 +18,7 @@ namespace MarkItDesktop.ViewModels
         #region Private members
 
         private string _text = string.Empty;
+        private readonly ITodoService _todoService;
 
         #endregion
 
@@ -40,25 +44,67 @@ namespace MarkItDesktop.ViewModels
 
         #endregion
 
-        public MainViewModel()
+        public MainViewModel(ITodoService todoService)
         {
-
             AddCommand = new RelayComamnd(AddTodo);
+            this._todoService = todoService;
+            // TODO : Call this when window has loaded
+            Task.Run(LoadItems);
         }
 
-        public void AddTodo()
+        async void LoadItems()
+        {
+            IList<TodoResponseModel>? items = await _todoService.GetTodosAsync();
+            if (items is not null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    TodoItems.Clear();
+                    foreach (TodoResponseModel todo in items)
+                    {
+                        TodoItems.Add(new(todo.Id)
+                        {
+                            Text = todo.Text,
+                            IsCompleted = todo.IsCompleted
+                        });
+                    }
+                });
+            }
+        }
+
+        public async void AddTodo()
         {
             if (string.IsNullOrWhiteSpace(Text))
                 return;
 
-            TodoItems.Add(
-                    new TodoItemViewModel
-                    {
-                        Text = Text
-                    }
-                );
+            TodoResponseModel? todo = await _todoService.CreateTodoAsync(
+                new TodoApiModel()
+                {
+                    Text = Text,
+                    IsCompleted = false
+                });
 
             Text = string.Empty;
+
+            if (todo is null)
+                return;
+
+            TodoItems.Add(new(todo.Id)
+            {
+                Text = todo.Text,
+                IsCompleted = todo.IsCompleted
+            });
+        }
+
+        public async void UpdateTodo(TodoItemViewModel item)
+        {
+            TodoResponseModel? todo = await _todoService.UpdateTodoAsync( item.Id,
+                new TodoApiModel()
+                {
+                    IsCompleted = item.IsCompleted,
+                    Text = item.Text
+                });
+
         }
     }
 }

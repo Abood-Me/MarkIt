@@ -27,7 +27,7 @@ namespace MarkItWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Todo>> PostTodo([FromBody] TodoApiModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -53,7 +53,18 @@ namespace MarkItWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Errors);
 
 
-            return CreatedAtAction(nameof(GetTodo), new { id = todo.Id }, todo);
+            return CreatedAtAction(
+                nameof(GetTodo), 
+                new { id = todo.Id }, 
+                new APIResponseModel<TodoResponseModel>() { 
+                    Succeeded = true,
+                    Response = new TodoResponseModel()
+                    {
+                        Id = todo.Id,
+                        Text = todo.Text,
+                        IsCompleted = todo.IsCompleted
+                    }
+                });
         }
 
         [HttpPatch("{id:int}")]
@@ -79,8 +90,19 @@ namespace MarkItWebAPI.Controllers
 
 
             IdentityResult result = await _userManager.UpdateAsync(user);
-
-            return Ok(result);
+            return AcceptedAtAction(
+                nameof(GetTodo),
+                new { id = todo.Id },
+                new APIResponseModel<TodoResponseModel>()
+                {
+                    Succeeded = true,
+                    Response = new TodoResponseModel()
+                    {
+                        Id = todo.Id,
+                        Text = todo.Text,
+                        IsCompleted = todo.IsCompleted
+                    }
+                });
         }
 
         [HttpDelete("{id:int}")]
@@ -106,7 +128,7 @@ namespace MarkItWebAPI.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Todo>> GetTodo([FromRoute] int id)
+        public async Task<ActionResult<APIResponseModel<TodoResponseModel>>> GetTodo([FromRoute] int id)
         {
             string? userId = _userManager.GetUserId(User);
             ApplicationUser? user = await _userManager.Users
@@ -121,11 +143,20 @@ namespace MarkItWebAPI.Controllers
             if (todo is null)
                 return NotFound("Todo not found");
 
-            return Ok(todo);
+            return Ok(new APIResponseModel<TodoResponseModel>()
+            {
+                Succeeded = true,
+                Response = new TodoResponseModel()
+                {
+                    Id = todo.Id,
+                    Text = todo.Text,
+                    IsCompleted = todo.IsCompleted
+                }
+            });
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Todo>>> GetTodos()
+        public async Task<ActionResult<APIResponseModel<List<TodoResponseModel>>>> GetTodos()
         {
             string? id = _userManager.GetUserId(User);
             ApplicationUser? user = await _userManager.Users
@@ -134,7 +165,19 @@ namespace MarkItWebAPI.Controllers
             if (user is null)
                 return NotFound("User not found");
 
-            return Ok(user.Todos);
+            return Ok(new APIResponseModel<List<TodoResponseModel>>
+            {
+                Succeeded = true,
+                Response = new List<TodoResponseModel>( 
+                    user.Todos.Select(t => 
+                        new TodoResponseModel 
+                        { 
+                            Id = t.Id,
+                            Text = t.Text, 
+                            IsCompleted = t.IsCompleted 
+                        })
+                    )
+            });
         }
     }
 }
