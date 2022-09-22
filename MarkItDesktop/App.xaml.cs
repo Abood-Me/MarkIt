@@ -43,19 +43,18 @@ namespace MarkItDesktop
                 {
                     
                     var connectionString = context.Configuration.GetConnectionString("ClientStore");
-                    services.AddDbContext<ClientDbContext>(options => options.UseSqlite(connectionString));
+                    services.AddDbContext<ClientDbContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
 
                     // Register services
+                    services.AddSingleton<IClientDataStore, ClientDataStore>();
                     services.AddHttpClient<IAuthService, AuthService>(client =>
                     {
                         client.BaseAddress = new Uri("https://localhost:5000/api/auth/");
                     });
-
-                    services.AddHttpClient<ITodoService, TodoService>( (services, client) =>
+                    services.AddHttpClient<ITodoService, TodoService>( async (services, client) =>
                     {
-                        // TODO : Use Data Store service instead
-                        ClientDbContext dbContext = services.GetRequiredService<ClientDbContext>();
-                        ClientData? data = dbContext.Data.FirstOrDefault();
+                        IClientDataStore store = services.GetRequiredService<IClientDataStore>();
+                        ClientData? data = await store.GetStoredLoginAsync();
                         if(data is not null)
                             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.Token);
 
@@ -72,20 +71,17 @@ namespace MarkItDesktop
 
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             // Start the generic Host
             AppHost.Start();
             // Request the main window as a singleton
             MainWindow = AppHost.Services.GetRequiredService<MainWindow>();
             MainWindow.Visibility = Visibility.Visible;
-            // Make sure the database is there and updated.
-            ClientDbContext context = AppHost.Services.GetRequiredService<ClientDbContext>();
-            context.Database.Migrate();
-
+            
             // TODO : Move this to AuthService ( LoginPage ) and verify credentials via API
-            ClientData? data = context.Data.FirstOrDefault();
-            if(data is not null)
+            IClientDataStore store = AppHost.Services.GetRequiredService<IClientDataStore>();
+            if(await store.HasStoredLogin())
             {
                 AppHost.Services.GetRequiredService<ApplicationViewModel>().CurrentPage = Models.ApplicationPage.MainPage;
             }

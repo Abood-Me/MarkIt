@@ -13,12 +13,12 @@ namespace MarkItDesktop.Services
     public class AuthService : IAuthService
     {
         private readonly HttpClient _client;
-        private readonly ClientDbContext _dbContext;
+        private readonly IClientDataStore _store;
 
-        public AuthService(HttpClient client, ClientDbContext dbContext)
+        public AuthService(HttpClient client, IClientDataStore store)
         {
-            this._client = client;
-            this._dbContext = dbContext;
+            _client = client;
+            _store = store;
         }
 
         public async Task<bool> LoginAsync(string username, string password)
@@ -34,16 +34,8 @@ namespace MarkItDesktop.Services
             var content = await response.Content.ReadFromJsonAsync<APIResponseModel<LoginResponseModel>>();
             if (content is null)
                 return false;
-            // TODO : Add a data store Service
-            _dbContext.Data.Add(
-                new ClientData()
-                {
-                    Username = content.Response!.Username,
-                    Email = content.Response.Email,
-                    Token = content.Response.Token
-                });
 
-            await _dbContext.SaveChangesAsync();
+            await _store.AddLoginDataAsync(content.Response!);
 
             return content.Succeeded;
         }

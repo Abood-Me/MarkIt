@@ -14,12 +14,12 @@ namespace MarkItDesktop.ViewModels
 
 		private string _text = string.Empty;
 		private bool _isCompleted;
-		private bool _isLoaded = false;
+		private readonly MainViewModel _mainViewModel;
 
-        #endregion
+		#endregion
 
-        #region Public Properties
-        public int Id { get; }
+		#region Public Properties
+		public int Id { get; }
 
 
         public string Text
@@ -40,23 +40,16 @@ namespace MarkItDesktop.ViewModels
 			{
 				_isCompleted = value;
 				OnPropertyChanged();
-				if(_isLoaded)
-				{
-					MainViewModel viewModel = App.AppHost.Services.GetRequiredService<MainViewModel>();
-					viewModel.UpdateTodo(this);
-					// TODO:Sync all todos every now and then by marking changed ones as dirty
-				}
-				else
-				{
-					_isLoaded = true;
-				}
+				_mainViewModel.UpdateTodo(this);
+					// TODO: Sync all todos every now and then by marking changed ones as dirty
 			}
 		}
 
 		#endregion
-		public TodoItemViewModel(int id)
+		public TodoItemViewModel(int id, MainViewModel mainViewModel)
 		{
 			Id = id;
+			_mainViewModel = mainViewModel;
 		}
 
 

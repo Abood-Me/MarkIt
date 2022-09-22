@@ -19,6 +19,7 @@ namespace MarkItDesktop.ViewModels
 
         private string _text = string.Empty;
         private readonly ITodoService _todoService;
+        private bool _ignoreChanges;
 
         #endregion
 
@@ -59,14 +60,19 @@ namespace MarkItDesktop.ViewModels
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    TodoItems.Clear();
-                    foreach (TodoResponseModel todo in items)
+                    if(!_ignoreChanges)
                     {
-                        TodoItems.Add(new(todo.Id)
+                        _ignoreChanges = true;
+                        TodoItems.Clear();
+                        foreach (TodoResponseModel todo in items)
                         {
-                            Text = todo.Text,
-                            IsCompleted = todo.IsCompleted
-                        });
+                            TodoItems.Add(new(todo.Id, this)
+                            {
+                                Text = todo.Text,
+                                IsCompleted = todo.IsCompleted
+                            });
+                        }
+                        _ignoreChanges = false;
                     }
                 });
             }
@@ -88,16 +94,21 @@ namespace MarkItDesktop.ViewModels
 
             if (todo is null)
                 return;
-
-            TodoItems.Add(new(todo.Id)
+            if (!_ignoreChanges)
             {
-                Text = todo.Text,
-                IsCompleted = todo.IsCompleted
-            });
+                _ignoreChanges = true;
+                TodoItems.Add(new(todo.Id, this)
+                {
+                    Text = todo.Text,
+                    IsCompleted = todo.IsCompleted
+                });
+                _ignoreChanges = false;
+            }
         }
 
         public async void UpdateTodo(TodoItemViewModel item)
         {
+            if (_ignoreChanges) return;
             TodoResponseModel? todo = await _todoService.UpdateTodoAsync( item.Id,
                 new TodoApiModel()
                 {
