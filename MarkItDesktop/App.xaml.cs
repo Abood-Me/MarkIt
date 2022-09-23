@@ -83,7 +83,7 @@ namespace MarkItDesktop
             IClientDataStore store = AppHost.Services.GetRequiredService<IClientDataStore>();
             if(await store.HasStoredLogin())
             {
-                AppHost.Services.GetRequiredService<ApplicationViewModel>().CurrentPage = Models.ApplicationPage.MainPage;
+                AppHost.Services.GetRequiredService<ApplicationViewModel>().NavigateTo(Models.ApplicationPage.MainPage);
             }
 
         }

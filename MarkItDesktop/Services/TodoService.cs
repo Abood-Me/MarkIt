@@ -27,7 +27,6 @@ namespace MarkItDesktop.Services
         public async Task<TodoResponseModel?> CreateTodoAsync(TodoApiModel model)
         {
             HttpResponseMessage response = await _client.PostAsJsonAsync(string.Empty, model);
-
             if (!response.IsSuccessStatusCode)
                 return null;
 

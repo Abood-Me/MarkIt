@@ -54,11 +54,16 @@ namespace MarkItDesktop.ViewModels
             LoginCommand = new RelayComamnd(async () => await Login());
         }
 
+        public LoginViewModel()
+        {
+
+        }
+
         public async Task Login()
         {
             bool isValid = await _authService.LoginAsync(Username, Password);
-            if(isValid)    
-                _application.CurrentPage = ApplicationPage.MainPage;
+            if (isValid)
+                _application.NavigateTo(ApplicationPage.MainPage);
             
         }
     }

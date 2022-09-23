@@ -52,7 +52,10 @@ namespace MarkItDesktop.ViewModels
             // TODO : Call this when window has loaded
             Task.Run(LoadItems);
         }
+        public MainViewModel()
+        {
 
+        }
         async void LoadItems()
         {
             IList<TodoResponseModel>? items = await _todoService.GetTodosAsync();

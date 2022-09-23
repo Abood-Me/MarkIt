@@ -43,7 +43,7 @@ namespace MarkItWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Errors);
             }
 
-            // TODO : Return Response API Model
+            // TODO : Implement Register on client side & Return Response API Model
             return Ok("User registered successfully");
         }
 

@@ -17,6 +17,8 @@ namespace MarkItDesktop.Services
         public ClientDataStore(ClientDbContext dbContext)
         {
             _dbContext = dbContext;
+            // TODO : Lazy work around, fix this later
+            _dbContext.Database.Migrate();
         }
         public async Task AddLoginDataAsync(LoginResponseModel model)
         {

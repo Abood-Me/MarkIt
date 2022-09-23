@@ -14,7 +14,7 @@ namespace MarkItDesktop.ViewModels
 		public ApplicationPage CurrentPage
 		{
 			get => _currentPage;
-			set
+			private set
 			{
 				_currentPage = value;
 				OnPropertyChanged();
@@ -26,5 +26,10 @@ namespace MarkItDesktop.ViewModels
 			CurrentPage = ApplicationPage.LoginPage;
 		}
 
+
+		public void NavigateTo(ApplicationPage page)
+		{
+			CurrentPage = page;
+		}
 	}
 }

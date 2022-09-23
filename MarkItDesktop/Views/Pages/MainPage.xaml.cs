@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarkItDesktop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,9 @@ namespace MarkItDesktop.Views
     /// <summary>
     /// Interaction logic for MainPage.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class MainPage : BasePage<MainViewModel>
     {
+
         public MainPage()
         {
             InitializeComponent();

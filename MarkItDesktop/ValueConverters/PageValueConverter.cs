@@ -21,18 +21,9 @@ namespace MarkItDesktop.ValueConverters
             switch (page)
             {
                 case ApplicationPage.LoginPage:
-                    // TODO :
-                    // - Change Pages to have generic ViewModel type
-                    // - Add a GoToPage method with a ViewModel as argument
-                    return new LoginPage()
-                    {
-                        DataContext = App.AppHost.Services.GetRequiredService<LoginViewModel>()
-                    };
+                    return new LoginPage();
                 case ApplicationPage.MainPage:
-                    return new MainPage()
-                    {
-                        DataContext = App.AppHost.Services.GetRequiredService<MainViewModel>()
-                    };
+                    return new MainPage();
                 default:
                     Debugger.Break();
                     return null;
