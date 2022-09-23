@@ -71,20 +71,13 @@ namespace MarkItDesktop
 
         }
 
-        protected override async void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
             // Start the generic Host
             AppHost.Start();
             // Request the main window as a singleton
             MainWindow = AppHost.Services.GetRequiredService<MainWindow>();
             MainWindow.Visibility = Visibility.Visible;
-            
-            // TODO : Move this to AuthService ( LoginPage ) and verify credentials via API
-            IClientDataStore store = AppHost.Services.GetRequiredService<IClientDataStore>();
-            if(await store.HasStoredLogin())
-            {
-                AppHost.Services.GetRequiredService<ApplicationViewModel>().NavigateTo(Models.ApplicationPage.MainPage);
-            }
 
         }
     }

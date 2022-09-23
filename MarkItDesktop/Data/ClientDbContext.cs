@@ -11,7 +11,7 @@ namespace MarkItDesktop.Data
     public class ClientDbContext : DbContext
     {
 
-        public DbSet<ClientData> Data { get; set; }
+        public DbSet<ClientData> Data { get; set; } = null!;
 
         public ClientDbContext( DbContextOptions<ClientDbContext> contextOptions ) : base(contextOptions) {   }
         public ClientDbContext() { }

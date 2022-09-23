@@ -28,6 +28,7 @@ namespace MarkItDesktop.ViewModels
         private string? _password;
         private readonly ApplicationViewModel _application;
         private readonly IAuthService _authService;
+        private readonly IClientDataStore _storeService;
 
         public string? Password
         {
@@ -39,18 +40,20 @@ namespace MarkItDesktop.ViewModels
             }
         }
 
-
-
-
         #region Comamnds
 
         public ICommand LoginCommand { private set; get; }
 
         #endregion
-        public LoginViewModel(ApplicationViewModel application, IAuthService authService)
+
+        public LoginViewModel(
+            ApplicationViewModel application, 
+            IAuthService authService,
+            IClientDataStore storeService)
         {
             this._application = application;
             this._authService = authService;
+            this._storeService = storeService;
             LoginCommand = new RelayComamnd(async () => await Login());
         }
 
@@ -64,7 +67,16 @@ namespace MarkItDesktop.ViewModels
             bool isValid = await _authService.LoginAsync(Username, Password);
             if (isValid)
                 _application.NavigateTo(ApplicationPage.MainPage);
-            
+        }
+
+        public async Task OnLoaded()
+        {
+
+            if (await _storeService.HasStoredLogin())
+            {
+                // TODO : Verify token via API
+               _application.NavigateTo(ApplicationPage.MainPage);
+            }
         }
     }
 }

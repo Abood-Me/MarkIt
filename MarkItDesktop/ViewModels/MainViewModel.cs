@@ -49,35 +49,36 @@ namespace MarkItDesktop.ViewModels
         {
             AddCommand = new RelayComamnd(AddTodo);
             this._todoService = todoService;
-            // TODO : Call this when window has loaded
-            Task.Run(LoadItems);
         }
         public MainViewModel()
         {
 
         }
-        async void LoadItems()
+
+        public async Task OnLoaded()
+        {
+            await LoadItems();
+        }
+
+        async Task LoadItems()
         {
             IList<TodoResponseModel>? items = await _todoService.GetTodosAsync();
             if (items is not null)
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                if(!_ignoreChanges)
                 {
-                    if(!_ignoreChanges)
+                    _ignoreChanges = true;
+                    TodoItems.Clear();
+                    foreach (TodoResponseModel todo in items)
                     {
-                        _ignoreChanges = true;
-                        TodoItems.Clear();
-                        foreach (TodoResponseModel todo in items)
+                        TodoItems.Add(new(todo.Id, this)
                         {
-                            TodoItems.Add(new(todo.Id, this)
-                            {
-                                Text = todo.Text,
-                                IsCompleted = todo.IsCompleted
-                            });
-                        }
-                        _ignoreChanges = false;
+                            Text = todo.Text,
+                            IsCompleted = todo.IsCompleted
+                        });
                     }
-                });
+                    _ignoreChanges = false;
+                }
             }
         }
 
