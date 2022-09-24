@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MarkItDesktop"
         xmlns:converters="clr-namespace:MarkItDesktop.ValueConverters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="500">
+        Title="Mark It" Height="500" Width="900">
     <Grid>
             
         <Frame Content="{Binding CurrentPage, 
