@@ -30,7 +30,7 @@
                     PlaceHolder="Type something ..."
                     Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                     Margin="5 0"
-                    Padding="10"
+                    Padding="10 12"
                     FontSize="{StaticResource FontSizeSmall}"/>
                 <Button Content="Add"
                         Grid.Column="1"

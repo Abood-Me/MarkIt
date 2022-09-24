@@ -11,7 +11,7 @@
             <ItemsControl ItemsSource="{Binding TodoItems}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <local:TodoItem Margin="10 5"/>
+                        <local:TodoItem FirstLoad="{Binding FirstLoad}" Margin="10 5"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

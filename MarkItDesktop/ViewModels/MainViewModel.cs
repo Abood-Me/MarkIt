@@ -104,7 +104,8 @@ namespace MarkItDesktop.ViewModels
                 TodoItems.Add(new(todo.Id, this)
                 {
                     Text = todo.Text,
-                    IsCompleted = todo.IsCompleted
+                    IsCompleted = todo.IsCompleted,
+                    FirstLoad = true
                 });
                 _ignoreChanges = false;
             }
