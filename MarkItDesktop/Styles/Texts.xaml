@@ -37,7 +37,7 @@
                             <TextBlock x:Name="placeholder"
                                        IsHitTestVisible="False"
                                        Visibility="Hidden"
-                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontFamily="{StaticResource JosefinLight}"
                                        FontSize="{TemplateBinding FontSize}"
                                        Padding="{TemplateBinding Padding}"
                                        Text="{TemplateBinding PlaceHolder}"

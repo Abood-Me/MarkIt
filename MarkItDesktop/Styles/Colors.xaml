@@ -3,7 +3,7 @@
 
     <Color x:Key="PrimaryColor">#0041A3</Color>
     <Color x:Key="BackgroundColor">#FFF</Color>
-    <Color x:Key="BackgroundDimColor">#B5B5B5</Color>
+    <Color x:Key="BackgroundDimColor">#D9D9D9</Color>
     <Color x:Key="BackgroundDarkColor">#555555</Color>
 
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />

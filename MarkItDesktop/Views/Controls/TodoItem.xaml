@@ -8,26 +8,27 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="500">
     <Border
-        Background="#EEEEEE"
-        Padding="5"
-        CornerRadius="2">
+        Background="{StaticResource BackgroundDimBrush}"
+        Padding="5">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <CheckBox VerticalAlignment="Center" 
+            <CheckBox VerticalAlignment="Top" 
                       HorizontalAlignment="Center"
                       Margin="10"
                       IsChecked="{Binding IsCompleted}"/>
 
-            <TextBlock Text="{Binding Text}" 
-                       Grid.Column="1"
-                       VerticalAlignment="Center"
+            <TextBlock Grid.Column="1"
+                       Margin="10"
+                       Text="{Binding Text}"
+                       FontFamily="{StaticResource JosefinLight}"
+                       FontSize="{StaticResource FontSizeSmall}"
+                       VerticalAlignment="Top"
                        TextWrapping="Wrap"
                        TextDecorations="{Binding IsCompleted, Converter={x:Static converters:BooleanToTextDecorationConverter.Instance}, ConverterParameter={}}"
-                       >
-            </TextBlock>
+                       />
 
         </Grid>
     </Border>
