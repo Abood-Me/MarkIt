@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\JosefinSans-Bold.ttf" />
+    <None Remove="Fonts\JosefinSans-Light.ttf" />
+    <None Remove="Fonts\JosefinSans-Medium.ttf" />
+    <None Remove="Fonts\JosefinSans-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
@@ -34,6 +41,13 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\JosefinSans-Bold.ttf" />
+    <Resource Include="Fonts\JosefinSans-Light.ttf" />
+    <Resource Include="Fonts\JosefinSans-Medium.ttf" />
+    <Resource Include="Fonts\JosefinSans-Regular.ttf" />
   </ItemGroup>
 
 </Project>
