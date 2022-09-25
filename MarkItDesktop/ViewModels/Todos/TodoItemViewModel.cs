@@ -22,7 +22,7 @@ namespace MarkItDesktop.ViewModels
 		#region Public Properties
 		public int Id { get; }
 
-		public bool  FirstLoad
+		public bool FirstLoad
 		{
 			get => _firstLoad;
 			set

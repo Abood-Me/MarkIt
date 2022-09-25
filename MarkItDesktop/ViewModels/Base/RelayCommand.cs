@@ -7,12 +7,12 @@ using System.Windows.Input;
 
 namespace MarkItDesktop.ViewModels
 {
-    public class RelayComamnd : ICommand
+    public class RelayCommand : ICommand
     {
         private Action _action;
         public event EventHandler? CanExecuteChanged;
 
-        public RelayComamnd(Action action)
+        public RelayCommand(Action action)
         {
             _action = action;
         }

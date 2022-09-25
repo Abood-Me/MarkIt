@@ -11,11 +11,25 @@
         <Setter Property="FontFamily" Value="{StaticResource JosefinRegular}" />
         <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
         <Setter Property="Padding" Value="20 15" />
-        <Setter Property="Margin" Value="5 10" />
+        <Setter Property="Margin" Value="5 15" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StackPanel>
+                        <TextBlock Foreground="{StaticResource InvalidBrush}" 
+                                   Text="{Binding ErrorContent.ErrorMessage}"
+                                   Margin="5 10"
+                                   FontSize="{StaticResource FontSizeXSmall}"
+                                   />
+                        <AdornedElementPlaceholder />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:TextBox">

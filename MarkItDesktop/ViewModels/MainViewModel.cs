@@ -47,7 +47,7 @@ namespace MarkItDesktop.ViewModels
 
         public MainViewModel(ITodoService todoService)
         {
-            AddCommand = new RelayComamnd(AddTodo);
+            AddCommand = new RelayCommand(AddTodo);
             this._todoService = todoService;
         }
         public MainViewModel()
