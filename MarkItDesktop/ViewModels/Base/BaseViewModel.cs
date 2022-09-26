@@ -17,6 +17,6 @@ namespace MarkItDesktop.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public virtual object? OnLoaded() => null;
+        public virtual Task? OnLoaded() => null;
     }
 }

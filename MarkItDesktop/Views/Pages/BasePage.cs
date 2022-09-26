@@ -45,14 +45,15 @@ namespace MarkItDesktop.Views
         {
             BasePage page = sender as BasePage;
             if(AnimateOut)
+                // TODO : Switch on page animation
                 await page.ScaleAndFadeOut(AnimationDuration);
             else
                 await page.ScaleAndFadeIn(AnimationDuration);
 
         }
 
-        public virtual void PageLoaded(object sender, RoutedEventArgs e)  {
-            ViewModelObject.OnLoaded();
+        public virtual async void PageLoaded(object sender, RoutedEventArgs e)  {
+            await ViewModelObject.OnLoaded();
         }
     }
     public class BasePage<TViewModel> : BasePage
