@@ -19,6 +19,7 @@ namespace MarkItDesktop.ViewModels
 
         private string _text = string.Empty;
         private readonly ITodoService _todoService;
+        private readonly ApplicationViewModel application;
         private bool _ignoreChanges;
 
         #endregion
@@ -45,17 +46,18 @@ namespace MarkItDesktop.ViewModels
 
         #endregion
 
-        public MainViewModel(ITodoService todoService)
+        public MainViewModel(ITodoService todoService, ApplicationViewModel application)
         {
             AddCommand = new RelayCommand(AddTodo);
-            this._todoService = todoService;
+            _todoService = todoService;
+            this.application = application;
         }
         public MainViewModel()
         {
 
         }
 
-        public async Task OnLoaded()
+        public override async Task OnLoaded()
         {
             await LoadItems();
         }
@@ -105,7 +107,7 @@ namespace MarkItDesktop.ViewModels
                 {
                     Text = todo.Text,
                     IsCompleted = todo.IsCompleted,
-                    FirstLoad = true
+                    NewItem = true
                 });
                 _ignoreChanges = false;
             }

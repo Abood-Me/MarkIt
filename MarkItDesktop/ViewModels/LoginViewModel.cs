@@ -81,13 +81,14 @@ namespace MarkItDesktop.ViewModels
                 _application.NavigateTo(ApplicationPage.MainPage);
         }
 
-        public async Task OnLoaded()
+        public override async Task OnLoaded()
         {
-
             if (await _storeService.HasStoredLogin())
             {
+                await Task.Delay(4000);
+
                 // TODO : Verify token via API
-               _application.NavigateTo(ApplicationPage.MainPage);
+                _application.NavigateTo(ApplicationPage.MainPage);
             }
         }
     }

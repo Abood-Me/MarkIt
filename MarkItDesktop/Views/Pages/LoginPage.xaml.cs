@@ -1,4 +1,6 @@
 ﻿using MarkItDesktop.ViewModels;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace MarkItDesktop.Views
@@ -11,13 +13,6 @@ namespace MarkItDesktop.Views
         public LoginPage()
         {
             InitializeComponent();
-
-            Loaded += LoginPage_Loaded;
-        }
-
-        private async void LoginPage_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            await ViewModel.OnLoaded();
         }
     }
 }
