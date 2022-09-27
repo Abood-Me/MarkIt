@@ -29,22 +29,34 @@ namespace MarkItWebAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            // TODO : Server side validations (login and register )!
+            // TODO : Add fullname to user
             ApplicationUser user = new()
             {
                 UserName = model.Username,
-                Email = model.Email
+                Email = model.Email,
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
             
             if(!result.Succeeded)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, result.Errors);
+                return StatusCode(StatusCodes.Status500InternalServerError, new APIResponseModel<RegisterResponseModel>()
+                {
+                    Succeeded = false,
+                    Errors = result.Errors.Select(e => e.Description).ToArray()
+                });
             }
 
             // TODO : Implement Register on client side & Return Response API Model
-            return Ok("User registered successfully");
+            return Ok(new APIResponseModel<RegisterResponseModel>()
+            {
+                Succeeded = true,
+                Response = new RegisterResponseModel()
+                {
+                    Username = user.UserName
+                }
+            });
         }
 
         [HttpPost("login")]

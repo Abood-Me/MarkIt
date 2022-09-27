@@ -35,14 +35,30 @@ namespace MarkItDesktop.Services
             if (content is null)
                 return false;
 
+            // TODO : Check this storing later.
             await _store.AddLoginDataAsync(content.Response!);
 
             return content.Succeeded;
         }
 
-        public Task<bool> RegisterAsync(string username, string password, string email)
+        public async Task<bool> RegisterAsync(string username, string password, string email, string fullName)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await _client.PostAsJsonAsync<RegisterApiModel>("register", new()
+            {
+                Username = username,
+                Password = password,
+                Email = email,
+                FullName = fullName
+            });
+
+            if (!response.IsSuccessStatusCode)
+                return false;
+
+            var content = await response.Content.ReadFromJsonAsync<APIResponseModel<LoginResponseModel>>();
+            if (content is null)
+                return false;
+
+            return content.Succeeded;
         }
     }
 }

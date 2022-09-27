@@ -1,4 +1,5 @@
 ﻿using MarkItDesktop.Models;
+using MarkItDesktop.Services;
 using MarkItDesktop.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace MarkItDesktop.ViewModels
     public class RegisterViewModel : BaseValidationViewModel
     {
         private readonly ApplicationViewModel _application;
+        private readonly IAuthService _authService;
 
         #region Private Members
 
@@ -92,9 +94,10 @@ namespace MarkItDesktop.ViewModels
         public ICommand RegisterCommand { get; private set; }
         #endregion
 
-        public RegisterViewModel(ApplicationViewModel application)
+        public RegisterViewModel(ApplicationViewModel application, IAuthService authService)
         {
             _application = application;
+            _authService = authService;
             LoginCommand = new RelayCommand(GoToLogin);
             RegisterCommand = new RelayCommand(async () => await Register());
         }
@@ -108,11 +111,16 @@ namespace MarkItDesktop.ViewModels
             ValidateProperty(ConfirmPassword);
             ValidateProperty(Email);
             ValidateProperty(FullName);
+
             if (HasErrors)
                 return;
 
-            await Task.Delay(2000);
-            _application.NavigateTo(ApplicationPage.LoginPage);
+            bool succeeded = await _authService.RegisterAsync(Username, Password, Email, FullName);
+            // TODO: Try catch errors set error message with server response error if there is any.
+
+
+            if(succeeded)
+                _application.NavigateTo(ApplicationPage.LoginPage);
         }
 
         public void GoToLogin()
