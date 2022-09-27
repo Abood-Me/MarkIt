@@ -9,6 +9,7 @@ namespace MarkItDesktop.Models
     public enum ApplicationPage
     {
         LoginPage = 0,
-        MainPage = 1
+        MainPage = 1,
+        RegisterPage = 2
     }
 }

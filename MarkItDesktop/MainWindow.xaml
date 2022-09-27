@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:MarkItDesktop.Views.Controls"
         xmlns:converters="clr-namespace:MarkItDesktop.ValueConverters"
         mc:Ignorable="d"
-        Title="Mark It" Height="500" Width="900">
+        Title="Mark It" Height="600" Width="900">
     <Grid>
         <controls:PageManager Page="{Binding CurrentPage, 
             Converter={x:Static converters:PageValueConverter.Instance}}" />

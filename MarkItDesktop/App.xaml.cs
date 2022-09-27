@@ -65,6 +65,7 @@ namespace MarkItDesktop
                     // TODO : Move these to a seperate extension method
                     services.AddSingleton<ApplicationViewModel>();
                     services.AddTransient<LoginViewModel>();
+                    services.AddTransient<RegisterViewModel>();
                     services.AddTransient<MainViewModel>();
                 })
                 .Build();

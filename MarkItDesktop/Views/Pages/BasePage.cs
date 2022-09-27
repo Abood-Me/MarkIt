@@ -53,7 +53,12 @@ namespace MarkItDesktop.Views
         }
 
         public virtual async void PageLoaded(object sender, RoutedEventArgs e)  {
-            await ViewModelObject.OnLoaded();
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
+            Task? obj = ViewModelObject.OnLoaded();
+            if (obj is not null)
+                await obj;
         }
     }
     public class BasePage<TViewModel> : BasePage
