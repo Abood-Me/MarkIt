@@ -14,7 +14,7 @@ namespace MarkItDesktop.ViewModels
 
 		private string _text = string.Empty;
 		private bool _isCompleted;
-		private bool _firstLoad;
+		private bool _newItem;
 		private readonly MainViewModel _mainViewModel;
 
 		#endregion
@@ -22,12 +22,12 @@ namespace MarkItDesktop.ViewModels
 		#region Public Properties
 		public int Id { get; }
 
-		public bool FirstLoad
+		public bool NewItem
 		{
-			get => _firstLoad;
+			get => _newItem;
 			set
 			{
-				_firstLoad = value;
+				_newItem = value;
 				OnPropertyChanged();
 			}
 		}

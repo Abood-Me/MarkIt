@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarkItDesktop.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,42 +23,40 @@ namespace MarkItDesktop.Views
     public partial class TodoItem : UserControl
     {
 
-        public bool FirstLoad
+
+
+        public bool IsNew
         {
-            get { return (bool)GetValue(FirstLoadProperty); }
-            set { SetValue(FirstLoadProperty, value); }
+            get { return (bool)GetValue(IsNewProperty); }
+            set { SetValue(IsNewProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for FirstLoad.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FirstLoadProperty =
-            DependencyProperty.Register("FirstLoad", typeof(bool), typeof(TodoItem), new PropertyMetadata(false));
+        // Using a DependencyProperty as the backing store for IsNew.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsNewProperty =
+            DependencyProperty.Register("IsNew", typeof(bool), typeof(TodoItem), new PropertyMetadata(false, OnNewValueChanged));
+
 
 
         public TodoItem()
         {
             InitializeComponent();
-            Loaded += TodoItem_Loaded;
         }
 
-        private void TodoItem_Loaded(object sender, RoutedEventArgs e)
+        private static void OnNewValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
-            // TODO : Make animation helpers to avoid this boilterplate
-            if(FirstLoad)
+            if((bool)e.NewValue)
             {
-                TodoItem item = sender as TodoItem;
-                Storyboard sb = new();
-                DoubleAnimation animation = new(0, item.Opacity, TimeSpan.FromMilliseconds(500));
-                ThicknessAnimation slideAnimation = new(new Thickness(0, item.ActualHeight, 0, -item.ActualHeight), item.Margin, TimeSpan.FromMilliseconds(500));
-                slideAnimation.DecelerationRatio = 0.9f;
-                animation.DecelerationRatio = 0.9f;
-                Storyboard.SetTargetProperty(animation, new PropertyPath("Opacity"));
-                Storyboard.SetTargetProperty(slideAnimation, new PropertyPath("Margin"));
-                sb.Children.Add(animation);
-                sb.Children.Add(slideAnimation);
-                sb.Begin(item);
-                item.BringIntoView();
-                FirstLoad = false;
+                FrameworkElement element = d as FrameworkElement;
+                RoutedEventHandler loaded = null;
+                loaded = async (_, _) =>
+                {
+                    element.BringIntoView();
+                    await element.SlideAndFadeIn(TimeSpan.FromMilliseconds(250));
+                    element.Loaded -= loaded;
+                };
+
+                element.Loaded += loaded;
+                
             }
         }
     }

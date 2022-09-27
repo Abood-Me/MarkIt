@@ -5,7 +5,37 @@
         <ResourceDictionary Source="/Styles/Fonts.xaml"/>
         <ResourceDictionary Source="/Styles/Texts.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    
+
+    <Style x:Key="LinkButton" TargetType="Button">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource JosefinLight}" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock Foreground="{TemplateBinding Foreground}" 
+                               Text="{TemplateBinding Content}"
+                               FontFamily="{TemplateBinding FontFamily}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource BackgroundDarkBrush}" />
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="InverseLinkButton" TargetType="Button" BasedOn="{StaticResource LinkButton}">
+        <Setter Property="Foreground" Value="{StaticResource BackgroundBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource BackgroundDimBrush}" />
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <Style x:Key="TodoCheck" TargetType="{x:Type CheckBox}">
         <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
@@ -51,7 +81,7 @@
     <Style TargetType="Button">
         <Setter Property="FontFamily" Value="{StaticResource JosefinRegular}" />
         <Setter Property="FontSize" Value="{StaticResource FontSizeXLarge}" />
-        <Setter Property="Padding" Value="40 10" />
+        <Setter Property="Padding" Value="60 10" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="{StaticResource BackgroundDimBrush}" />
         <Setter Property="Template">
@@ -83,16 +113,16 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="{StaticResource BackgroundDarkColor}" Duration="0:00:00.150" />
-                                        <ColorAnimation Storyboard.TargetProperty="Foreground.Color" To="{StaticResource BackgroundColor}" Duration="0:00:00.150" />
+                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="{StaticResource BackgroundDarkColor}" Duration="0:00:00.12" />
+                                        <ColorAnimation Storyboard.TargetProperty="Foreground.Color" To="{StaticResource BackgroundColor}" Duration="0:00:00.12" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" From="{StaticResource BackgroundDarkColor}" Duration="0:00:00.150" />
-                                        <ColorAnimation Storyboard.TargetProperty="Foreground.Color" From="{StaticResource BackgroundColor}" Duration="0:00:00.150" />
+                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" From="{StaticResource BackgroundDarkColor}" Duration="0:00:00.12" />
+                                        <ColorAnimation Storyboard.TargetProperty="Foreground.Color" From="{StaticResource BackgroundColor}" Duration="0:00:00.12" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>

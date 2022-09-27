@@ -49,6 +49,7 @@ namespace MarkItDesktop.ViewModels
         #region Comamnds
 
         public ICommand LoginCommand { private set; get; }
+        public ICommand RegisterCommand { private set; get; }
 
         #endregion
 
@@ -61,6 +62,7 @@ namespace MarkItDesktop.ViewModels
             this._authService = authService;
             this._storeService = storeService;
             LoginCommand = new RelayCommand(async () => await Login());
+            RegisterCommand = new RelayCommand(GoToRegister);
         }
 
         public LoginViewModel()
@@ -81,13 +83,17 @@ namespace MarkItDesktop.ViewModels
                 _application.NavigateTo(ApplicationPage.MainPage);
         }
 
-        public async Task OnLoaded()
+        public void GoToRegister()
         {
+            _application.NavigateTo(ApplicationPage.RegisterPage);
+        }
 
+        public override async Task OnLoaded()
+        {
             if (await _storeService.HasStoredLogin())
             {
                 // TODO : Verify token via API
-               _application.NavigateTo(ApplicationPage.MainPage);
+                _application.NavigateTo(ApplicationPage.RegisterPage);
             }
         }
     }

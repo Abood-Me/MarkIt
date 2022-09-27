@@ -22,10 +22,11 @@
                     <StackPanel>
                         <TextBlock Foreground="{StaticResource InvalidBrush}" 
                                    Text="{Binding ErrorContent.ErrorMessage}"
-                                   Margin="5 10"
-                                   FontSize="{StaticResource FontSizeXSmall}"
+                                   Margin="5 5"
+                                   FontFamily="{StaticResource JosefinBold}"
+                                   FontSize="12"
                                    />
-                        <AdornedElementPlaceholder />
+                        <AdornedElementPlaceholder x:Name="placeholder" />
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>

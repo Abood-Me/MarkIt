@@ -4,13 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MarkItDesktop"
+        xmlns:controls="clr-namespace:MarkItDesktop.Views.Controls"
         xmlns:converters="clr-namespace:MarkItDesktop.ValueConverters"
         mc:Ignorable="d"
-        Title="Mark It" Height="500" Width="900">
+        Title="Mark It" Height="600" Width="900">
     <Grid>
-            
-        <Frame Content="{Binding CurrentPage, 
-            Converter={x:Static converters:PageValueConverter.Instance}}" 
-                            NavigationUIVisibility="Hidden"/>
+        <controls:PageManager Page="{Binding CurrentPage, 
+            Converter={x:Static converters:PageValueConverter.Instance}}" />
     </Grid>
 </Window>

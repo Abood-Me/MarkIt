@@ -8,10 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
     <None Remove="Fonts\JosefinSans-Bold.ttf" />
     <None Remove="Fonts\JosefinSans-Light.ttf" />
     <None Remove="Fonts\JosefinSans-Medium.ttf" />
     <None Remove="Fonts\JosefinSans-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -35,12 +42,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MarkIt.Common\MarkIt.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

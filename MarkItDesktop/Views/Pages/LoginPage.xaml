@@ -7,39 +7,48 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MarkItDesktop.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="900">
-    <Border Background="#0041A3"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            TextBlock.TextAlignment="Center"
-            Padding="30"
-            Width="500">
+      mc:Ignorable="d">
+    <Border>
+        <StackPanel                    
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <Border Background="#0041A3"
+                    TextBlock.TextAlignment="Center"
+                    Padding="20"
+                    Width="600">
+                <StackPanel Margin="100 0">
+                    <TextBlock
+                            Text="Welcome !" 
+                            FontSize="{StaticResource FontSizeXLarge}"
+                            Foreground="{StaticResource BackgroundBrush}"/>
+                    <TextBlock
+                            Text="Please login to continue" 
+                            FontFamily="{StaticResource JosefinLight}"
+                            Foreground="{StaticResource BackgroundBrush}"
+                            Margin="0 0 0 20"/>
+                    <controls:TextBox Margin="0 20"
+                                      PlaceHolder="Username"
+                                      Text="{Binding Username}"/>
 
-        <StackPanel>
-            <TextBlock
-                    Text="Welcome !" 
-                    FontSize="{StaticResource FontSizeXLarge}"
-                    Foreground="White"/>
-            <TextBlock
-                    Text="Please login to continue" 
-                    FontSize="{StaticResource FontSizeRegular}"
-                    FontFamily="{StaticResource JosefinLight}"
-                    Foreground="White"
-                    Margin="0 0 0 40"/>
-            <controls:TextBox Margin="40 15"
-                              PlaceHolder="Username"
-                              Text="{Binding Username}"/>
+                    <controls:TextBox Margin="0 20 0 10"
+                             PlaceHolder="Password"
+                             Text="{Binding Password}" />
 
+                    <Button Content="Forgot Password ?"
+                            HorizontalAlignment="Right"
+                            Margin="0 5"
+                            Style="{StaticResource InverseLinkButton}"/>
 
-            <controls:TextBox Margin="40 15"
-                     PlaceHolder="Password"
-                     Text="{Binding Password}" />
-
-            <Button Content="Login"
+                    <Button Content="Login"
+                            HorizontalAlignment="Center"
+                            Margin="0 30 0 0"
+                            Command="{Binding LoginCommand}" />
+                </StackPanel>
+            </Border>
+            <Button Style="{StaticResource LinkButton}"
+                    Content="I don't have an account"
                     HorizontalAlignment="Center"
-                    Margin="0 20"
-                    Command="{Binding LoginCommand}" />
+                    Command="{Binding RegisterCommand}"/>
         </StackPanel>
     </Border>
 </local:BasePage>

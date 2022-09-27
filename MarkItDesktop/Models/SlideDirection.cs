@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace MarkItDesktop.Models
 {
-    public enum ApplicationPage
+    public enum SlideDirection
     {
-        LoginPage = 0,
-        MainPage = 1,
-        RegisterPage = 2
+        Left = 0,
+        Top = 1,
+        Right = 2,
+        Bottom = 3,
     }
 }

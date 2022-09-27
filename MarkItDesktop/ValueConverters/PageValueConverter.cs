@@ -24,6 +24,8 @@ namespace MarkItDesktop.ValueConverters
                     return new LoginPage();
                 case ApplicationPage.MainPage:
                     return new MainPage();
+                case ApplicationPage.RegisterPage:
+                    return new RegisterPage();
                 default:
                     Debugger.Break();
                     return null;
