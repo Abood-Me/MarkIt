@@ -22,7 +22,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString);
 });
 
-builder.Services.AddIdentityCore<ApplicationUser>()
+builder.Services.AddIdentityCore<ApplicationUser>(i =>
+    {
+        i.Password.RequireNonAlphanumeric = false;
+        i.Password.RequireUppercase = false;
+        i.Password.RequiredLength = 8;
+        i.User.RequireUniqueEmail = true;
+    })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

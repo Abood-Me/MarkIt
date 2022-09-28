@@ -88,7 +88,7 @@ namespace MarkItDesktop.Helpers
                 SlideDirection.Left => new Thickness(-offset, 0, offset, 0),
                 SlideDirection.Right => new Thickness(offset, 0, -offset, 0),
                 SlideDirection.Top => new Thickness(0, -offset, 0, offset),
-                SlideDirection.Bottom => new Thickness(0, offset, 0, offset),
+                SlideDirection.Bottom => new Thickness(0, offset, 0, -offset),
                 _ => throw new ArgumentOutOfRangeException(nameof(direction))
             };
 

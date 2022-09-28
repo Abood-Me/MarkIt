@@ -2,6 +2,7 @@
                 x:TypeArguments="vm:LoginViewModel"
       xmlns:vm="clr-namespace:MarkItDesktop.ViewModels"
       xmlns:controls="clr-namespace:MarkItDesktop.Views.Controls"
+      xmlns:converters="clr-namespace:MarkItDesktop.ValueConverters"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -26,13 +27,34 @@
                             FontFamily="{StaticResource JosefinLight}"
                             Foreground="{StaticResource BackgroundBrush}"
                             Margin="0 0 0 20"/>
+
+                    <TextBlock Foreground="{StaticResource InvalidBrush}"
+                               FontFamily="{StaticResource JosefinRegular}"
+                               FontSize="{StaticResource FontSizeSmall}"
+                               Text="{Binding ErrorMessage}"
+                               TextWrapping="Wrap"
+                               >
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
                     <controls:TextBox Margin="0 20"
                                       PlaceHolder="Username"
-                                      Text="{Binding Username}"/>
+                                      Text="{Binding Username}"
+                                      IsEnabled="{Binding IsIdle}"
+                                      />
 
                     <controls:TextBox Margin="0 20 0 10"
                              PlaceHolder="Password"
-                             Text="{Binding Password}" />
+                             Text="{Binding Password}"
+                             IsEnabled="{Binding IsIdle}"/>
 
                     <Button Content="Forgot Password ?"
                             HorizontalAlignment="Right"
@@ -42,7 +64,10 @@
                     <Button Content="Login"
                             HorizontalAlignment="Center"
                             Margin="0 30 0 0"
-                            Command="{Binding LoginCommand}" />
+                            Command="{Binding LoginCommand}"
+                            IsEnabled="{Binding IsIdle}"/>
+                    <!-- This have to move to command canExecute-->
+
                 </StackPanel>
             </Border>
             <Button Style="{StaticResource LinkButton}"

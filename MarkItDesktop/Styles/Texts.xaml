@@ -26,7 +26,7 @@
                                    FontFamily="{StaticResource JosefinBold}"
                                    FontSize="12"
                                    />
-                        <AdornedElementPlaceholder x:Name="placeholder" />
+                        <AdornedElementPlaceholder />
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
@@ -34,7 +34,6 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:TextBox">
-                    
                     <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
                         <Border.Effect>
                             <DropShadowEffect Color="{StaticResource PrimaryColor}" 
@@ -60,6 +59,21 @@
                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment }"
                                        Foreground="{StaticResource BackgroundDarkBrush}"/>
                         </Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualStateGroup.States>
+                                    <VisualState Name="Disabled">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" Storyboard.TargetProperty="Background.Color" To="{StaticResource BackgroundDimColor}" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="Normal" />
+                                </VisualStateGroup.States>
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0" />
+                                </VisualStateGroup.Transitions>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                     </Border>
                     <ControlTemplate.Triggers>
                         <MultiDataTrigger>

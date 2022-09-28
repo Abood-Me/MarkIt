@@ -1,5 +1,6 @@
 ﻿using MarkIt.Common.Models;
 using MarkItDesktop.Data;
+using MarkItDesktop.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,17 +29,17 @@ namespace MarkItDesktop.Services
                 Password = password
             });
 
-            if (!response.IsSuccessStatusCode)
-                return false;
-
             var content = await response.Content.ReadFromJsonAsync<APIResponseModel<LoginResponseModel>>();
-            if (content is null)
-                return false;
+            if (content is { } model)
+            {
+                if (!model.Succeeded)
+                    throw new AuthenticationException(model.Errors.FirstOrDefault());
 
-            // TODO : Check this storing later.
-            await _store.AddLoginDataAsync(content.Response!);
+                await _store.AddLoginDataAsync(content.Response);
 
-            return content.Succeeded;
+                return model.Succeeded;
+            }
+            return false;
         }
 
         public async Task<bool> RegisterAsync(string username, string password, string email, string fullName)
@@ -51,14 +52,16 @@ namespace MarkItDesktop.Services
                 FullName = fullName
             });
 
-            if (!response.IsSuccessStatusCode)
-                return false;
 
-            var content = await response.Content.ReadFromJsonAsync<APIResponseModel<LoginResponseModel>>();
-            if (content is null)
-                return false;
+            var content = await response.Content.ReadFromJsonAsync<APIResponseModel<RegisterResponseModel>>();
+            if (content is { } model)
+            {
+                if (!model.Succeeded)
+                    throw new AuthenticationException(model.Errors.FirstOrDefault());
 
-            return content.Succeeded;
+                return model.Succeeded;
+            }
+            return false;
         }
     }
 }

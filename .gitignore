@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 *.db-shm
 *.db-wal
+/MarkItDesktop/Client.db

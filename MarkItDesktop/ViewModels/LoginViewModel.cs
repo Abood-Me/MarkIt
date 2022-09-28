@@ -1,10 +1,13 @@
-﻿using MarkItDesktop.Models;
+﻿using MarkItDesktop.Exceptions;
+using MarkItDesktop.Models;
 using MarkItDesktop.Services;
 using MarkItDesktop.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,20 +18,28 @@ namespace MarkItDesktop.ViewModels
     public class LoginViewModel : BaseValidationViewModel
     {
 
+        #region Private Members
+
         private string? _username;
         private string? _password;
+        private string? _errorMessage;
+        private bool _isLoading;
 
         private readonly ApplicationViewModel _application;
         private readonly IAuthService _authService;
         private readonly IClientDataStore _storeService;
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Username field is required")]
+        #endregion
+
+        #region Public Members
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Username field is required")]
         [MinLength(5, ErrorMessage = "Username field must have a minimum length of 5")]
         public string? Username
         {
             get => _username;
-            set 
-            { 
+            set
+            {
                 _username = value;
                 OnPropertyChanged();
             }
@@ -39,12 +50,37 @@ namespace MarkItDesktop.ViewModels
         public string? Password
         {
             get => _password;
-            set 
-            { 
+            set
+            {
                 _password = value;
                 OnPropertyChanged();
             }
         }
+
+        public string? ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsIdle));
+            }
+        }
+
+        public bool IsIdle => !IsLoading;
+
+        #endregion
 
         #region Comamnds
 
@@ -74,13 +110,33 @@ namespace MarkItDesktop.ViewModels
         {
             ValidateProperty(Username);
             ValidateProperty(Password);
+            ErrorMessage = string.Empty;
 
             if (HasErrors)
                 return;
+            
+            try
+            {
+                IsLoading = true;
+                if(await _authService.LoginAsync(Username, Password))
+                {
+                    _application.NavigateTo(ApplicationPage.MainPage);
+                }
+                
+            }
+            catch(HttpRequestException)
+            {
+                ErrorMessage = "Connection to server failed. Try again later.";
+            }
+            catch(AuthenticationException e)
+            {
+                ErrorMessage = e.Message;
+            }
+            finally
+            {
+                IsLoading = false;
+            }
 
-            bool isValid = await _authService.LoginAsync(Username, Password);
-            if (isValid)
-                _application.NavigateTo(ApplicationPage.MainPage);
         }
 
         public void GoToRegister()
@@ -90,10 +146,11 @@ namespace MarkItDesktop.ViewModels
 
         public override async Task OnLoaded()
         {
+            // NEXT : Move this to a loading page
             if (await _storeService.HasStoredLogin())
             {
                 // TODO : Verify token via API
-                _application.NavigateTo(ApplicationPage.RegisterPage);
+                _application.NavigateTo(ApplicationPage.MainPage);
             }
         }
     }

@@ -1,10 +1,13 @@
-﻿using MarkItDesktop.Models;
+﻿using MarkItDesktop.Exceptions;
+using MarkItDesktop.Models;
 using MarkItDesktop.Services;
 using MarkItDesktop.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -23,6 +26,8 @@ namespace MarkItDesktop.ViewModels
         private string? _fullName;
         private string? _password;
         private string? _confirmPassword;
+        private string? _errorMessage;
+        private bool _isLoading;
 
         #endregion
 
@@ -86,6 +91,29 @@ namespace MarkItDesktop.ViewModels
             }
         }
 
+        public string? ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsIdle));
+            }
+        }
+
+        public bool IsIdle => !IsLoading;
+
         #endregion
 
 
@@ -111,16 +139,30 @@ namespace MarkItDesktop.ViewModels
             ValidateProperty(ConfirmPassword);
             ValidateProperty(Email);
             ValidateProperty(FullName);
-
+            ErrorMessage = string.Empty;
             if (HasErrors)
                 return;
 
-            bool succeeded = await _authService.RegisterAsync(Username, Password, Email, FullName);
-            // TODO: Try catch errors set error message with server response error if there is any.
-
-
-            if(succeeded)
-                _application.NavigateTo(ApplicationPage.LoginPage);
+            try
+            {
+                IsLoading = true;
+                bool succeeded = await _authService.RegisterAsync(Username, Password, Email, FullName);
+                if (succeeded)
+                    _application.NavigateTo(ApplicationPage.LoginPage);
+            }
+            catch (HttpRequestException e)
+            {
+                ErrorMessage = "Connection to server failed, try again later.";
+            }
+            catch (AuthenticationException e)
+            {
+                ErrorMessage = e.Message;
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+            
         }
 
         public void GoToLogin()

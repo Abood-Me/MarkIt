@@ -29,26 +29,36 @@ namespace MarkItWebAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            // TODO : Server side validations (login and register )!
-            // TODO : Add fullname to user
-            ApplicationUser user = new()
+            ApplicationUser? user = await _userManager.FindByNameAsync(model.Username);
+            if (user is not null)
+                return BadRequest(
+                    new APIResponseModel<RegisterResponseModel>
+                    {
+                        Succeeded = false,
+                        Errors = new List<string>()
+                        {
+                            "Username already exist"
+                        }
+                    });
+
+            user = new()
             {
                 UserName = model.Username,
                 Email = model.Email,
+                FullName = model.FullName
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
             
             if(!result.Succeeded)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new APIResponseModel<RegisterResponseModel>()
+                return StatusCode(StatusCodes.Status400BadRequest, new APIResponseModel<RegisterResponseModel>()
                 {
                     Succeeded = false,
                     Errors = result.Errors.Select(e => e.Description).ToArray()
                 });
             }
 
-            // TODO : Implement Register on client side & Return Response API Model
             return Ok(new APIResponseModel<RegisterResponseModel>()
             {
                 Succeeded = true,
@@ -70,12 +80,28 @@ namespace MarkItWebAPI.Controllers
             ApplicationUser? user = await _userManager.FindByNameAsync(model.Username);
 
             if (user is null)
-                return NotFound();
+                return NotFound(
+                    new APIResponseModel<LoginResponseModel>
+                    {
+                        Succeeded = false,
+                        Errors = new List<string>()
+                        {
+                            "Username doesn't exist"
+                        }
+                    });
 
             bool valid = await _userManager.CheckPasswordAsync(user, model.Password);
 
             if (!valid)
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden,
+                    new APIResponseModel<LoginResponseModel>
+                    {
+                        Succeeded = false,
+                        Errors = new List<string>()
+                            {
+                                "Invalid password for this user"
+                            }
+                    });
 
             SecurityTokenDescriptor tokenDescriptor = new()
             {
