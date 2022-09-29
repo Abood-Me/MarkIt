@@ -1,7 +1,6 @@
 ﻿using MarkItDesktop.Exceptions;
 using MarkItDesktop.Models;
 using MarkItDesktop.Services;
-using MarkItDesktop.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

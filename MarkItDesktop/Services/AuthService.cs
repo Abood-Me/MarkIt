@@ -28,7 +28,7 @@ namespace MarkItDesktop.Services
                 Username = username,
                 Password = password
             });
-
+            // TODO : Handle unexpected responses.
             var content = await response.Content.ReadFromJsonAsync<APIResponseModel<LoginResponseModel>>();
             if (content is { } model)
             {

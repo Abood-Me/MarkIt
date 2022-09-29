@@ -54,7 +54,7 @@ namespace MarkItDesktop.Services
             JsonContent content = JsonContent.Create(model, typeof(TodoApiModel));
 
             HttpResponseMessage response = await _client.PatchAsync($"{id}", content);
-            // TODO : Response have error message, throw error when fails.
+            // TODO : Handle exceptions
             if (!response.IsSuccessStatusCode)
                 return null;
 

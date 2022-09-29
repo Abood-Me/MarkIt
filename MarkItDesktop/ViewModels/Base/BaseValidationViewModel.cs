@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarkItDesktop.ViewModel
+namespace MarkItDesktop.ViewModels
 {
     public abstract class BaseValidationViewModel : BaseViewModel, INotifyDataErrorInfo
     {

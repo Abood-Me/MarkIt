@@ -10,6 +10,7 @@ namespace MarkItDesktop.Models
     {
         LoginPage = 0,
         MainPage = 1,
-        RegisterPage = 2
+        RegisterPage = 2,
+        LaunchPage = 3
     }
 }

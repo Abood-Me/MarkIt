@@ -23,7 +23,7 @@ namespace MarkItDesktop.ViewModels
 
 		public ApplicationViewModel()
 		{
-			CurrentPage = ApplicationPage.LoginPage;
+			CurrentPage = ApplicationPage.LaunchPage;
 		}
 
 

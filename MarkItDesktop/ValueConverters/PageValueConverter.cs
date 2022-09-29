@@ -26,9 +26,11 @@ namespace MarkItDesktop.ValueConverters
                     return new MainPage();
                 case ApplicationPage.RegisterPage:
                     return new RegisterPage();
+                case ApplicationPage.LaunchPage:
+                    return new LaunchPage();
                 default:
                     Debugger.Break();
-                    return null;
+                    return value;
             }
         }
 

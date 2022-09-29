@@ -17,13 +17,17 @@ namespace MarkItDesktop.Services
         public ClientDataStore(ClientDbContext dbContext)
         {
             _dbContext = dbContext;
-            // NEXT : Move this to loading page
-            _dbContext.Database.Migrate();
         }
+
+        public async Task EnsureCreated()
+        {
+            await _dbContext.Database.MigrateAsync();
+        }
+
         public async Task AddLoginDataAsync(LoginResponseModel model)
         {
             // Make sure database is there.
-            await _dbContext.Database.MigrateAsync();
+            await EnsureCreated();
 
             _dbContext.Data.Add(
                 new ClientData()

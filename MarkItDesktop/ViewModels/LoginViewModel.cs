@@ -1,7 +1,6 @@
 ﻿using MarkItDesktop.Exceptions;
 using MarkItDesktop.Models;
 using MarkItDesktop.Services;
-using MarkItDesktop.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -144,14 +143,5 @@ namespace MarkItDesktop.ViewModels
             _application.NavigateTo(ApplicationPage.RegisterPage);
         }
 
-        public override async Task OnLoaded()
-        {
-            // NEXT : Move this to a loading page
-            if (await _storeService.HasStoredLogin())
-            {
-                // TODO : Verify token via API
-                _application.NavigateTo(ApplicationPage.MainPage);
-            }
-        }
     }
 }
