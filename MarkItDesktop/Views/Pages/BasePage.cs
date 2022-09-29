@@ -56,9 +56,7 @@ namespace MarkItDesktop.Views
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            Task? obj = ViewModelObject.OnLoaded();
-            if (obj is not null)
-                await obj;
+            await ViewModelObject.OnLoaded();
         }
     }
     public class BasePage<TViewModel> : BasePage

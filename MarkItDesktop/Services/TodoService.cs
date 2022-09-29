@@ -1,6 +1,7 @@
 ﻿using MarkIt.Common.Models;
 using MarkItDesktop.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -22,48 +23,57 @@ namespace MarkItDesktop.Services
         {
             this._client = client;
             this._dbContext = dbContext;
+            // TODO: Update authorization token when logging out and logging in
         }
 
         public async Task<TodoResponseModel?> CreateTodoAsync(TodoApiModel model)
         {
             HttpResponseMessage response = await _client.PostAsJsonAsync(string.Empty, model);
-            if (!response.IsSuccessStatusCode)
-                return null;
 
-            APIResponseModel<TodoResponseModel>? apiResponse = await response.Content.ReadFromJsonAsync<APIResponseModel<TodoResponseModel>>();
+            APIResponseModel<TodoResponseModel>? responseModel = await response.Content.ReadFromJsonAsync<APIResponseModel<TodoResponseModel>>();
 
-            if (!apiResponse!.Succeeded)
-                return null;
+            if (responseModel is { } content)
+            {
+                if (!content.Succeeded)
+                    throw new NotImplementedException();
 
-            return apiResponse.Response;
+                return content.Response;
+            }
+
+            return null;
         }
 
         public async Task<IList<TodoResponseModel>?> GetTodosAsync()
         {
-            // TODO : Handle exceptions
-            APIResponseModel<List<TodoResponseModel>>? response = await _client.GetFromJsonAsync<APIResponseModel<List<TodoResponseModel>>>(string.Empty);
+            APIResponseModel<List<TodoResponseModel>>? responseModel = await _client.GetFromJsonAsync<APIResponseModel<List<TodoResponseModel>>>(string.Empty);
+            if (responseModel is { } content)
+            {
+                if (!content.Succeeded)
+                    throw new NotImplementedException();
 
-            if (response is null || !response.Succeeded)
-                return null;
+                return content.Response;
+            }
 
-            return response.Response;
+            return null;
         }
 
         public async Task<TodoResponseModel?> UpdateTodoAsync(int id, TodoApiModel model)
         {
-            JsonContent content = JsonContent.Create(model, typeof(TodoApiModel));
+            JsonContent requestContent = JsonContent.Create(model, typeof(TodoApiModel));
 
-            HttpResponseMessage response = await _client.PatchAsync($"{id}", content);
-            // TODO : Handle exceptions
-            if (!response.IsSuccessStatusCode)
-                return null;
+            HttpResponseMessage response = await _client.PatchAsync($"{id}", requestContent);
 
-            APIResponseModel<TodoResponseModel>? apiResponse = await response.Content.ReadFromJsonAsync<APIResponseModel<TodoResponseModel>>();
+            APIResponseModel<TodoResponseModel>? responseModel = await response.Content.ReadFromJsonAsync<APIResponseModel<TodoResponseModel>>();
 
-            if (!apiResponse!.Succeeded)
-                return null;
+            if (responseModel is { } content)
+            {
+                if (!content.Succeeded)
+                    throw new NotImplementedException();
 
-            return apiResponse.Response;
+                return content.Response;
+            }
+
+            return null;
         }
     }
 }

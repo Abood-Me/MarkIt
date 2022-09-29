@@ -29,14 +29,27 @@ namespace MarkItWebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = ModelState.Values.Select(m => m.Errors.FirstOrDefault()?.ErrorMessage ?? string.Empty).ToArray()
+                });
             }
+
             string? id = _userManager.GetUserId(User);
+
             ApplicationUser? user = await _userManager.Users
                                         .Include(u => u.Todos)
                                         .FirstOrDefaultAsync(u => u.Id == id);
             if (user is null)
-                return NotFound("User not found");
+                return NotFound(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = new[]
+                    {
+                        "Logged in user data not found."
+                    }
+                });
 
 
             Todo todo = new Todo()
@@ -50,7 +63,11 @@ namespace MarkItWebAPI.Controllers
             IdentityResult result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, result.Errors);
+                return BadRequest(new APIResponseModel<TodoResponseModel>()
+                {
+                    Succeeded = false,
+                    Errors = result.Errors.Select(e => e.Description).ToArray()
+                });
 
 
             return CreatedAtAction(
@@ -72,24 +89,52 @@ namespace MarkItWebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = ModelState.Values.Select(m => m.Errors.FirstOrDefault()?.ErrorMessage ?? string.Empty).ToArray()
+                });
             }
 
             string? userId = _userManager.GetUserId(User);
             ApplicationUser? user = await _userManager.Users
                                         .Include(u => u.Todos)
                                         .FirstOrDefaultAsync(u => u.Id == userId);
+
             if (user is null)
-                return NotFound("User not found");
+                return NotFound(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = new[]
+                    {
+                        "Logged in user data not found."
+                    }
+                });
 
             Todo? todo = user.Todos.FirstOrDefault(t => t.Id == id);
             if (todo is null)
-                return NotFound("Todo not found");
+                return NotFound(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = new[]
+                    {
+                        "Requested todo not found."
+                    }
+                });
+
             todo.IsCompleted = model.IsCompleted;
             todo.Text = model.Text;
 
 
             IdentityResult result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+                return BadRequest(new APIResponseModel<TodoResponseModel>()
+                {
+                    Succeeded = false,
+                    Errors = result.Errors.Select(e => e.Description).ToArray()
+                });
+
             return AcceptedAtAction(
                 nameof(GetTodo),
                 new { id = todo.Id },
@@ -114,15 +159,37 @@ namespace MarkItWebAPI.Controllers
                                         .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user is null)
-                return NotFound("User not found");
+                return NotFound(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = new[]
+                    {
+                        "Logged in user data not found."
+                    }
+                });
+
             Todo? todo = user.Todos.FirstOrDefault(t => t.Id == id);
 
             if (todo is null)
-                return NotFound("Todo not found");
+                return NotFound(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = new[]
+                    {
+                        "Requested todo not found."
+                    }
+                });
 
             user.Todos.Remove(todo);
 
             IdentityResult result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+                return BadRequest(new APIResponseModel<TodoResponseModel>()
+                {
+                    Succeeded = false,
+                    Errors = result.Errors.Select(e => e.Description).ToArray()
+                });
 
             return NoContent();
         }
@@ -136,12 +203,26 @@ namespace MarkItWebAPI.Controllers
                                         .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user is null)
-                return NotFound("User not found");
+                return NotFound(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = new[]
+                    {
+                        "Logged in user data not found."
+                    }
+                });
 
             Todo? todo = user.Todos.FirstOrDefault(t => t.Id == id);
 
             if (todo is null)
-                return NotFound("Todo not found");
+                return NotFound(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = new[]
+                    {
+                        "Requested todo not found."
+                    }
+                });
 
             return Ok(new APIResponseModel<TodoResponseModel>()
             {
@@ -163,7 +244,14 @@ namespace MarkItWebAPI.Controllers
                                         .Include(u => u.Todos)
                                         .FirstOrDefaultAsync(u => u.Id == id);
             if (user is null)
-                return NotFound("User not found");
+                return NotFound(new APIResponseModel<TodoResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = new[]
+                    {
+                        "Logged in user data not found."
+                    }
+                });
 
             return Ok(new APIResponseModel<List<TodoResponseModel>>
             {

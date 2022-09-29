@@ -27,37 +27,32 @@ namespace MarkItWebAPI.Controllers
         {
             if(!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new APIResponseModel<RegisterResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = ModelState.Values.Select(m => m.Errors.FirstOrDefault()?.ErrorMessage ?? string.Empty).ToArray()
+                });
             }
-            ApplicationUser? user = await _userManager.FindByNameAsync(model.Username);
-            if (user is not null)
-                return BadRequest(
-                    new APIResponseModel<RegisterResponseModel>
-                    {
-                        Succeeded = false,
-                        Errors = new List<string>()
-                        {
-                            "Username already exist"
-                        }
-                    });
 
-            user = new()
+            ApplicationUser user = new()
             {
                 UserName = model.Username,
                 Email = model.Email,
                 FullName = model.FullName
             };
 
+
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-            
-            if(!result.Succeeded)
+
+            if (!result.Succeeded)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new APIResponseModel<RegisterResponseModel>()
+                return BadRequest(new APIResponseModel<RegisterResponseModel>()
                 {
                     Succeeded = false,
                     Errors = result.Errors.Select(e => e.Description).ToArray()
                 });
             }
+
 
             return Ok(new APIResponseModel<RegisterResponseModel>()
             {
@@ -74,7 +69,11 @@ namespace MarkItWebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new APIResponseModel<LoginResponseModel>
+                {
+                    Succeeded = false,
+                    Errors = ModelState.Values.Select(m => m.Errors.FirstOrDefault()?.ErrorMessage ?? string.Empty).ToArray()
+                });
             }
 
             ApplicationUser? user = await _userManager.FindByNameAsync(model.Username);
@@ -97,7 +96,7 @@ namespace MarkItWebAPI.Controllers
                     new APIResponseModel<LoginResponseModel>
                     {
                         Succeeded = false,
-                        Errors = new List<string>()
+                        Errors = new[]
                             {
                                 "Invalid password for this user"
                             }
