@@ -1,5 +1,6 @@
 ﻿using MarkIt.Common.Models;
 using MarkItWebAPI.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -116,6 +117,44 @@ namespace MarkItWebAPI.Controllers
                  SigningCredentials = new SigningCredentials(new SymmetricSecurityKey( Encoding.UTF8.GetBytes( _configurations["JWT:Key"]) ), SecurityAlgorithms.HmacSha256)
             };
             
+            JwtSecurityTokenHandler tokenHandler = new();
+            JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+            return Ok(
+                new APIResponseModel<LoginResponseModel>
+                {
+                    Succeeded = true,
+                    Response = new()
+                    {
+                        Username = user.UserName,
+                        Email = user.Email,
+                        Token = tokenHandler.WriteToken(token)
+                    },
+                });
+        }
+
+        [Authorize]
+        [HttpGet("verify")]
+        public async Task<IActionResult> VerifyLogin()
+        {
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
+
+            if (user is null)
+                return Forbid();
+
+            SecurityTokenDescriptor tokenDescriptor = new()
+            {
+                Audience = _configurations["JWT:Audience"],
+                Issuer = _configurations["JWT:Issuer"],
+                Expires = DateTime.Now.AddDays(15),
+                Subject = new ClaimsIdentity(new[]
+                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                }),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configurations["JWT:Key"])), SecurityAlgorithms.HmacSha256)
+            };
+
             JwtSecurityTokenHandler tokenHandler = new();
             JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
             return Ok(

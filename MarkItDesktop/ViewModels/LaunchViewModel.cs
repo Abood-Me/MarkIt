@@ -12,11 +12,13 @@ namespace MarkItDesktop.ViewModels
     {
         private readonly ApplicationViewModel _application;
         private readonly IClientDataStore _store;
+        private readonly IAuthService _authService;
 
-        public LaunchViewModel(ApplicationViewModel application, IClientDataStore store)
+        public LaunchViewModel(ApplicationViewModel application, IClientDataStore store, IAuthService authService)
         {
             this._application = application;
             this._store = store;
+            this._authService = authService;
         }
 
         public LaunchViewModel()
@@ -28,11 +30,8 @@ namespace MarkItDesktop.ViewModels
         {
             await _store.EnsureCreated();
 
-            await Task.Delay(1000);
-
-            if (await _store.HasStoredLogin())
+            if (await _authService.VerifyLogin())
             {
-                // TODO : Verify token via API
                 _application.NavigateTo(ApplicationPage.MainPage);
                 return;
             }

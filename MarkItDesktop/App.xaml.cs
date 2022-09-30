@@ -1,20 +1,13 @@
 ﻿using MarkItDesktop.Data;
 using MarkItDesktop.Services;
-using MarkItDesktop.ViewModels;
+using MarkItDesktop.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Net.Http.Headers;
 
 namespace MarkItDesktop
 {
@@ -62,12 +55,8 @@ namespace MarkItDesktop
                     });
 
                     services.AddSingleton<MainWindow>();
-                    // TODO : Move these to a seperate extension method
-                    services.AddSingleton<ApplicationViewModel>();
-                    services.AddTransient<LaunchViewModel>();
-                    services.AddTransient<LoginViewModel>();
-                    services.AddTransient<RegisterViewModel>();
-                    services.AddTransient<MainViewModel>();
+                    services.AddApplicationViewModels();
+
                 })
                 .Build();
 

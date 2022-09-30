@@ -57,5 +57,15 @@ namespace MarkItDesktop.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task UpdateLoginDataAsync(ClientData data, LoginResponseModel model)
+        {
+            data.Token = model.Token;
+            data.Email = model.Email;
+            data.Username = model.Username;
+
+            _dbContext.Update(data);
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

@@ -3,8 +3,11 @@ using MarkItDesktop.Data;
 using MarkItDesktop.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +64,35 @@ namespace MarkItDesktop.Services
 
                 return model.Succeeded;
             }
+            return false;
+        }
+
+        public async Task<bool> VerifyLogin()
+        {
+            ClientData? data = await _store.GetStoredLoginAsync();
+
+            if (data is null)
+                return false;
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.Token);
+            HttpResponseMessage response = await _client.GetAsync("verify");
+
+            response.EnsureSuccessStatusCode();
+
+            if(response.StatusCode == HttpStatusCode.Forbidden)
+            {
+                await _store.ClearAllStoredLoginsAsync();
+
+                return false;
+            }
+
+            var content = await response.Content.ReadFromJsonAsync<APIResponseModel<LoginResponseModel>>();
+            if (content is { } model && model.Succeeded)
+            {
+                await _store.UpdateLoginDataAsync(data, model.Response);
+                return true;
+            }
+
             return false;
         }
     }

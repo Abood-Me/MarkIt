@@ -11,13 +11,10 @@ namespace MarkItDesktop.Services
     public interface IClientDataStore
     {
         Task<ClientData?> GetStoredLoginAsync();
-
         Task<bool> HasStoredLogin();
-
         Task AddLoginDataAsync(LoginResponseModel model);
-
+        Task UpdateLoginDataAsync(ClientData data, LoginResponseModel model);
         Task ClearAllStoredLoginsAsync();
-
         Task EnsureCreated();
     }
 }
