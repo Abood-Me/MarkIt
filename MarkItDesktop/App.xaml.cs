@@ -39,20 +39,18 @@ namespace MarkItDesktop
                     services.AddDbContext<ClientDbContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
 
                     // Register services
+                    services.AddTransient<AuthorizationHandler>();
                     services.AddSingleton<IClientDataStore, ClientDataStore>();
                     services.AddHttpClient<IAuthService, AuthService>(client =>
-                    {
-                        client.BaseAddress = new Uri("https://localhost:5000/api/auth/");
-                    });
-                    services.AddHttpClient<ITodoService, TodoService>( async (services, client) =>
-                    {
-                        IClientDataStore store = services.GetRequiredService<IClientDataStore>();
-                        ClientData? data = await store.GetStoredLoginAsync();
-                        if(data is not null)
-                            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.Token);
-
-                        client.BaseAddress = new Uri("https://localhost:5000/api/todos/");
-                    });
+                        {
+                            client.BaseAddress = new Uri("https://localhost:5000/api/auth/");
+                        })
+                        .AddHttpMessageHandler<AuthorizationHandler>();
+                    services.AddHttpClient<ITodoService, TodoService>(client =>
+                        {
+                            client.BaseAddress = new Uri("https://localhost:5000/api/todos/");
+                        })
+                        .AddHttpMessageHandler<AuthorizationHandler>();
 
                     services.AddSingleton<MainWindow>();
                     services.AddApplicationViewModels();

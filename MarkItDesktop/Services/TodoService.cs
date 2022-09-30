@@ -17,13 +17,10 @@ namespace MarkItDesktop.Services
     public class TodoService : ITodoService
     {
         private readonly HttpClient _client;
-        private readonly ClientDbContext _dbContext;
 
-        public TodoService(HttpClient client, ClientDbContext dbContext)
+        public TodoService( HttpClient client )
         {
             this._client = client;
-            this._dbContext = dbContext;
-            // TODO: Update authorization token when logging out and logging in
         }
 
         public async Task<TodoResponseModel?> CreateTodoAsync(TodoApiModel model)

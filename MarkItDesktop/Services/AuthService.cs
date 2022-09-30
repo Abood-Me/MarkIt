@@ -74,7 +74,6 @@ namespace MarkItDesktop.Services
             if (data is null)
                 return false;
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.Token);
             HttpResponseMessage response = await _client.GetAsync("verify");
 
             response.EnsureSuccessStatusCode();
