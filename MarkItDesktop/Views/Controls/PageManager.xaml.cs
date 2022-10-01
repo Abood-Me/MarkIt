@@ -40,7 +40,7 @@ namespace MarkItDesktop.Views.Controls
             if (e.NewValue is null)
                 return;
 
-            PageManager manager = d as PageManager;
+            PageManager manager = (PageManager)d;
             manager.CurrentFrame.Content = e.NewValue;
 
             if(e.OldValue is BasePage oldPage)
@@ -48,6 +48,7 @@ namespace MarkItDesktop.Views.Controls
                 manager.OldFrame.Content = oldPage;
                 oldPage.Loaded -= oldPage.PageLoaded;
                 oldPage.AnimateOut = true;
+                // Use Task Completion Source
                 await Task.Delay(oldPage.AnimationDuration.TimeSpan);
                 manager.OldFrame.Content = null;
             }

@@ -33,7 +33,7 @@ namespace MarkItDesktop.ViewModels
         #region Public Properties
         [Required(AllowEmptyStrings = false, ErrorMessage = "Username field is required")]
         [MinLength(5, ErrorMessage = "8 Minimum characters")]
-        public string? Username
+        public string Username
         {
             get => _username;
             set
@@ -44,7 +44,7 @@ namespace MarkItDesktop.ViewModels
         }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Email field is required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
-        public string? Email
+        public string Email
         {
             get => _email;
             set
@@ -56,7 +56,7 @@ namespace MarkItDesktop.ViewModels
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password field is required")]
         [MinLength(8, ErrorMessage = "8 Minimum characters")]
 
-        public string? Password
+        public string Password
         {
             get => _password;
             set
@@ -68,7 +68,7 @@ namespace MarkItDesktop.ViewModels
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password field is required")]
         [Compare(nameof(Password), ErrorMessage = "Passwords don't match")]
-        public string? ConfirmPassword
+        public string ConfirmPassword
         {
             get => _confirmPassword;
             set
@@ -80,7 +80,7 @@ namespace MarkItDesktop.ViewModels
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Full name field is required")]
         [RegularExpression("^([a-zA-Z]{2,}\\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\\s?([a-zA-Z]{1,})?)", ErrorMessage = "Valid characters include (A-Z), ( ' ) and ( - )")]
-        public string? FullName
+        public string FullName
         {
             get => _fullName;
             set
@@ -90,7 +90,7 @@ namespace MarkItDesktop.ViewModels
             }
         }
 
-        public string? ErrorMessage
+        public string ErrorMessage
         {
             get => _errorMessage;
             set
@@ -138,7 +138,9 @@ namespace MarkItDesktop.ViewModels
             ValidateProperty(ConfirmPassword);
             ValidateProperty(Email);
             ValidateProperty(FullName);
+
             ErrorMessage = string.Empty;
+
             if (HasErrors)
                 return;
 
@@ -149,7 +151,7 @@ namespace MarkItDesktop.ViewModels
                 if (succeeded)
                     _application.NavigateTo(ApplicationPage.LoginPage);
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 ErrorMessage = "Connection to server failed, try again later.";
             }

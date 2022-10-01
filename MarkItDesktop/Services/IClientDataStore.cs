@@ -15,6 +15,6 @@ namespace MarkItDesktop.Services
         Task AddLoginDataAsync(LoginResponseModel model);
         Task UpdateLoginDataAsync(ClientData data, LoginResponseModel model);
         Task ClearAllStoredLoginsAsync();
-        Task EnsureCreated();
+        Task EnsureCreatedAsync();
     }
 }

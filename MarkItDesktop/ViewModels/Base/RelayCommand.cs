@@ -9,7 +9,8 @@ namespace MarkItDesktop.ViewModels
 {
     public class RelayCommand : ICommand
     {
-        private Action _action;
+        private readonly Action _action;
+
         public event EventHandler? CanExecuteChanged;
 
         public RelayCommand(Action action)

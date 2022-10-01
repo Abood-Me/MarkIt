@@ -26,7 +26,6 @@ namespace MarkItDesktop.ViewModels
 
         private readonly ApplicationViewModel _application;
         private readonly IAuthService _authService;
-        private readonly IClientDataStore _storeService;
 
         #endregion
 
@@ -34,7 +33,7 @@ namespace MarkItDesktop.ViewModels
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Username field is required")]
         [MinLength(5, ErrorMessage = "Username field must have a minimum length of 5")]
-        public string? Username
+        public string Username
         {
             get => _username;
             set
@@ -46,7 +45,7 @@ namespace MarkItDesktop.ViewModels
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password field is required")]
         [MinLength(5, ErrorMessage = "Password field must have a minimum length of 5")]
-        public string? Password
+        public string Password
         {
             get => _password;
             set
@@ -56,7 +55,7 @@ namespace MarkItDesktop.ViewModels
             }
         }
 
-        public string? ErrorMessage
+        public string ErrorMessage
         {
             get => _errorMessage;
             set
@@ -90,12 +89,10 @@ namespace MarkItDesktop.ViewModels
 
         public LoginViewModel(
             ApplicationViewModel application, 
-            IAuthService authService,
-            IClientDataStore storeService)
+            IAuthService authService)
         {
             this._application = application;
             this._authService = authService;
-            this._storeService = storeService;
             LoginCommand = new RelayCommand(async () => await Login());
             RegisterCommand = new RelayCommand(GoToRegister);
         }

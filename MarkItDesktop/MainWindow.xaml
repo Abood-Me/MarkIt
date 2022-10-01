@@ -9,7 +9,20 @@
         mc:Ignorable="d"
         Title="Mark It" Height="600" Width="900">
     <Grid>
-        <controls:PageManager Page="{Binding CurrentPage, 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Border>
+            <controls:PageManager Page="{Binding CurrentPage, 
             Converter={x:Static converters:PageValueConverter.Instance}}" />
+        </Border>
+
+        <controls:SideMenu Grid.Column="1"
+                           Animate="{Binding IsMenuOpen}"
+                           Direction="Right"
+                           Width="250"
+                                  />
+
     </Grid>
 </Window>

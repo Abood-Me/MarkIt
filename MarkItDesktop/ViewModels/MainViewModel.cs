@@ -116,7 +116,7 @@ namespace MarkItDesktop.ViewModels
         public async void UpdateTodo(TodoItemViewModel item)
         {
             if (_ignoreChanges) return;
-            TodoResponseModel? todo = await _todoService.UpdateTodoAsync( item.Id,
+            await _todoService.UpdateTodoAsync( item.Id,
                 new TodoApiModel()
                 {
                     IsCompleted = item.IsCompleted,

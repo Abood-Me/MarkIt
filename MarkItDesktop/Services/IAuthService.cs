@@ -11,5 +11,6 @@ namespace MarkItDesktop.Services
         Task<bool> LoginAsync(string username, string password);
         Task<bool> RegisterAsync(string username, string password, string email, string fullName);
         Task<bool> VerifyLogin();
+        Task LogoutAsync();
     }
 }

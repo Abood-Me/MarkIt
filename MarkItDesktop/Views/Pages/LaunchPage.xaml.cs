@@ -19,7 +19,7 @@ namespace MarkItDesktop.Views
     /// <summary>
     /// Interaction logic for LaunchPage.xaml
     /// </summary>
-    public partial class LaunchPage : BasePage<LaunchViewModel>
+    public partial class LaunchPage // BasePage<LaunchViewModel>
     {
         public LaunchPage()
         {

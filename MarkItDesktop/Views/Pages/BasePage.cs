@@ -43,7 +43,7 @@ namespace MarkItDesktop.Views
 
         public async void OnPageAnimate(object sender, RoutedEventArgs e)
         {
-            BasePage page = sender as BasePage;
+            BasePage page = (BasePage)sender;
             if(AnimateOut)
                 // TODO : Switch on page animation
                 await page.ScaleAndFadeOut(AnimationDuration);
@@ -56,7 +56,8 @@ namespace MarkItDesktop.Views
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            await ViewModelObject.OnLoaded();
+            if(ViewModelObject is not null)
+                await ViewModelObject.OnLoaded();
         }
     }
     public class BasePage<TViewModel> : BasePage
@@ -66,7 +67,7 @@ namespace MarkItDesktop.Views
 
         public TViewModel ViewModel
         {
-            get => (TViewModel)ViewModelObject;
+            get => (TViewModel?)ViewModelObject;
             set => ViewModelObject = value;
         }
 

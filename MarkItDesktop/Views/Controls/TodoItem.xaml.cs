@@ -46,12 +46,12 @@ namespace MarkItDesktop.Views
         {
             if((bool)e.NewValue)
             {
-                FrameworkElement element = d as FrameworkElement;
-                RoutedEventHandler loaded = null;
+                FrameworkElement element = (FrameworkElement)d;
+                RoutedEventHandler? loaded = null;
                 loaded = async (_, _) =>
                 {
                     element.BringIntoView();
-                    await element.SlideAndFadeIn(TimeSpan.FromMilliseconds(250));
+                    await element.SlideAndFadeInAsync(TimeSpan.FromMilliseconds(250), hasConstraints: false);
                     element.Loaded -= loaded;
                 };
 

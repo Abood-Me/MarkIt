@@ -45,7 +45,6 @@ namespace MarkItDesktop.Helpers
             Storyboard.SetTargetProperty(animation, new PropertyPath("Opacity"));
 
             storyboard.Children.Add(animation);
-
             return storyboard;
         }
         #endregion
@@ -81,14 +80,14 @@ namespace MarkItDesktop.Helpers
         }
 
         #endregion
-        public static Storyboard AddSlideIn(this Storyboard storyboard, Duration duration, SlideDirection direction, double offset, float decelerationRatio = 0.9f)
+        public static Storyboard AddSlideIn(this Storyboard storyboard, Duration duration, SlideDirection direction, double offset, float decelerationRatio = 0.9f, bool hasConstraints = true)
         {
             Thickness from = direction switch
             {
-                SlideDirection.Left => new Thickness(-offset, 0, offset, 0),
-                SlideDirection.Right => new Thickness(offset, 0, -offset, 0),
-                SlideDirection.Top => new Thickness(0, -offset, 0, offset),
-                SlideDirection.Bottom => new Thickness(0, offset, 0, -offset),
+                SlideDirection.Left => new Thickness(-offset, 0, hasConstraints ? 0 : offset, 0),
+                SlideDirection.Right => new Thickness(hasConstraints ? 0 : offset, 0, -offset, 0),
+                SlideDirection.Top => new Thickness(0, -offset, 0, hasConstraints ? 0 : offset),
+                SlideDirection.Bottom => new Thickness(0, hasConstraints ? 0 : offset, 0, -offset),
                 _ => throw new ArgumentOutOfRangeException(nameof(direction))
             };
 
@@ -96,7 +95,31 @@ namespace MarkItDesktop.Helpers
             {
                 DecelerationRatio = decelerationRatio,
                 Duration = duration,
-                From = from
+                From = from,
+            };
+
+            Storyboard.SetTargetProperty(animation, new PropertyPath("Margin"));
+            storyboard.Children.Add(animation);
+
+            return storyboard;
+        }
+
+        public static Storyboard AddSlideOut(this Storyboard storyboard, Duration duration, SlideDirection direction, double offset, float decelerationRatio = 0.9f, bool hasConstraints = true)
+        {
+            Thickness to = direction switch
+            {
+                SlideDirection.Left => new Thickness(-offset, 0, hasConstraints ? 0 : offset, 0),
+                SlideDirection.Right => new Thickness(hasConstraints ? 0 : offset, 0, -offset, 0),
+                SlideDirection.Top => new Thickness(0, -offset, 0, hasConstraints ? 0 : offset),
+                SlideDirection.Bottom => new Thickness(0, hasConstraints ? 0 : offset, 0, -offset),
+                _ => throw new ArgumentOutOfRangeException(nameof(direction))
+            };
+
+            ThicknessAnimation animation = new()
+            {
+                DecelerationRatio = decelerationRatio,
+                Duration = duration,
+                To = to
             };
 
             Storyboard.SetTargetProperty(animation, new PropertyPath("Margin"));

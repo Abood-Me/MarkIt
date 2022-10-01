@@ -8,7 +8,7 @@ namespace MarkItDesktop.Views
     /// <summary>
     /// Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class RegisterPage : BasePage<RegisterViewModel>
+    public partial class RegisterPage // BasePage<RegisterViewModel>
     {
         public RegisterPage()
         {

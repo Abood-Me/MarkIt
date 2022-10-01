@@ -36,9 +36,9 @@ namespace MarkItDesktop.Services
             if (content is { } model)
             {
                 if (!model.Succeeded)
-                    throw new AuthenticationException(model.Errors.FirstOrDefault());
+                    throw new AuthenticationException(model.Errors?.FirstOrDefault() ?? string.Empty);
 
-                await _store.AddLoginDataAsync(content.Response);
+                await _store.AddLoginDataAsync(content.Response!);
 
                 return model.Succeeded;
             }
@@ -60,7 +60,7 @@ namespace MarkItDesktop.Services
             if (content is { } model)
             {
                 if (!model.Succeeded)
-                    throw new AuthenticationException(model.Errors.FirstOrDefault());
+                    throw new AuthenticationException(model.Errors?.FirstOrDefault() ?? string.Empty);
 
                 return model.Succeeded;
             }
@@ -88,11 +88,16 @@ namespace MarkItDesktop.Services
             var content = await response.Content.ReadFromJsonAsync<APIResponseModel<LoginResponseModel>>();
             if (content is { } model && model.Succeeded)
             {
-                await _store.UpdateLoginDataAsync(data, model.Response);
+                await _store.UpdateLoginDataAsync(data, model.Response!);
                 return true;
             }
 
             return false;
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _store.ClearAllStoredLoginsAsync();
         }
     }
 }

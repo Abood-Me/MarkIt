@@ -18,24 +18,29 @@ namespace MarkItDesktop.ViewModels
         private readonly Dictionary<string, List<ValidationResult>> Errors = new();
         public bool HasErrors => Errors.Any(e => e.Value.Any());
 
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
-        public IEnumerable GetErrors(string propertyName)
+        public IEnumerable GetErrors(string? propertyName)
         {
+            if (propertyName is null)
+                return null;
+
             return Errors.ContainsKey(propertyName) ? Errors[propertyName] : null;
         }
 
-        public void ValidateProperty<T>(T? propertyValue, [CallerArgumentExpression("propertyValue")]string? propertyName = null)
+        public void ValidateProperty<T>(T? propertyValue, [CallerArgumentExpression("propertyValue")] string? propertyName = null)
         {
-            if (!Errors.ContainsKey(propertyName))
-                Errors[propertyName] = new List<ValidationResult>();
+            if (!Errors.ContainsKey(propertyName!))
+                Errors[propertyName!] = new List<ValidationResult>();
 
-            Errors[propertyName].Clear();
+            Errors[propertyName!].Clear();
+
             Validator.TryValidateProperty(
                 propertyValue,
                 new ValidationContext(this, null) { MemberName = propertyName },
-                Errors[propertyName]);
-            ErrorsChanged.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+                Errors[propertyName!]);
+
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
     }

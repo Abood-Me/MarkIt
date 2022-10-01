@@ -28,15 +28,20 @@ namespace MarkItDesktop.ViewModels
 
         public override async Task OnLoaded()
         {
-            await _store.EnsureCreated();
-
-            if (await _authService.VerifyLogin())
+            await Task.Run(_store.EnsureCreatedAsync);
+            try
             {
-                _application.NavigateTo(ApplicationPage.MainPage);
-                return;
+                await Task.Delay(2000);
+                if (await _authService.VerifyLogin())
+                {
+                    _application.NavigateTo(ApplicationPage.MainPage);
+                    return;
+                }
             }
-
+            catch { }
+            
             _application.NavigateTo(ApplicationPage.LoginPage);
+
         }
     }
 }

@@ -19,7 +19,7 @@ namespace MarkItDesktop.Services
             _dbContext = dbContext;
         }
 
-        public async Task EnsureCreated()
+        public async Task EnsureCreatedAsync()
         {
             await _dbContext.Database.MigrateAsync();
         }
@@ -27,7 +27,7 @@ namespace MarkItDesktop.Services
         public async Task AddLoginDataAsync(LoginResponseModel model)
         {
             // Make sure database is there.
-            await EnsureCreated();
+            await EnsureCreatedAsync();
 
             _dbContext.Data.Add(
                 new ClientData()

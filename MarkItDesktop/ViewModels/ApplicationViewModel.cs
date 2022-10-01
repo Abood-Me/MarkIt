@@ -18,8 +18,12 @@ namespace MarkItDesktop.ViewModels
 			{
 				_currentPage = value;
 				OnPropertyChanged();
-			}
-		}
+                OnPropertyChanged(nameof(IsMenuOpen));
+
+            }
+        }
+
+		public bool IsMenuOpen => CurrentPage == ApplicationPage.MainPage;
 
 		public ApplicationViewModel()
 		{
