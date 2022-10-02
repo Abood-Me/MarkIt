@@ -21,7 +21,7 @@
         <controls:SideMenu Grid.Column="1"
                            Animate="{Binding IsMenuOpen}"
                            Direction="Right"
-                           Width="250"
+                           Width="300"
                                   />
 
     </Grid>

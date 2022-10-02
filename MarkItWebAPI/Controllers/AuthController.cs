@@ -127,7 +127,8 @@ namespace MarkItWebAPI.Controllers
                     {
                         Username = user.UserName,
                         Email = user.Email,
-                        Token = tokenHandler.WriteToken(token)
+                        Token = tokenHandler.WriteToken(token),
+                        FullName = user.FullName
                     },
                 });
         }
@@ -165,7 +166,8 @@ namespace MarkItWebAPI.Controllers
                     {
                         Username = user.UserName,
                         Email = user.Email,
-                        Token = tokenHandler.WriteToken(token)
+                        Token = tokenHandler.WriteToken(token),
+                        FullName = user.FullName
                     },
                 });
         }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MarkItDesktop.ViewModels
 {
@@ -31,14 +32,16 @@ namespace MarkItDesktop.ViewModels
             await Task.Run(_store.EnsureCreatedAsync);
             try
             {
-                await Task.Delay(2000);
                 if (await _authService.VerifyLogin())
                 {
+                    await _application.UpdateUserInfoAsync();
                     _application.NavigateTo(ApplicationPage.MainPage);
                     return;
                 }
             }
-            catch { }
+            catch(Exception e) {
+                MessageBox.Show(e.Message);
+            }
             
             _application.NavigateTo(ApplicationPage.LoginPage);
 

@@ -27,9 +27,6 @@ namespace MarkItDesktop
                 .ConfigureAppConfiguration((context,config) =>
                 {
                     
-                    config.SetBasePath(Environment.CurrentDirectory);
-                    config.AddJsonFile("appsettings.json", false, true);
-                    config.AddEnvironmentVariables();
 
                 })
                 .ConfigureServices((context,services) =>

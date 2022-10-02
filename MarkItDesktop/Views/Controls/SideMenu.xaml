@@ -6,7 +6,76 @@
              xmlns:local="clr-namespace:MarkItDesktop.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="250">
-    <Grid Background="{StaticResource BackgroundDimBrush}">
-            
-    </Grid>
+    <local:AnimatedControl.Template>
+        <ControlTemplate>
+            <Grid Background="{StaticResource BackgroundDarkBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Padding="20 10"
+                        Height="150"
+                        Background="{StaticResource ForegroundLightBrush}"
+                        x:Name="background"
+                        ClipToBounds="True">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Margin="0 10"
+                            VerticalAlignment="Center">
+                            <TextBlock Text="Logged in as :" 
+                               Foreground="{StaticResource BackgroundBrush}"
+                               FontFamily="{StaticResource JosefinLight}"
+                               FontSize="{StaticResource FontSizeXSmall}"
+                               Margin="5"/>
+                            <TextBlock Text="{Binding LoggedUser.Username}"
+                               Foreground="{StaticResource BackgroundBrush}"
+                               FontFamily="{StaticResource JosefinBold}"
+                               FontSize="{StaticResource FontSizeXLarge}"/>
+                            <TextBlock Text="{Binding LoggedUser.FullName}"
+                               Foreground="{StaticResource BackgroundBrush}"/>
+                        </StackPanel>
+
+                        <local:UserInfoHint x:Name="hint"
+                                            Grid.Row="1"
+                                            Animate="False"/>
+                    </Grid>
+                </Border>
+
+            </Grid>
+            <ControlTemplate.Triggers>
+                <DataTrigger Binding="{Binding ElementName=background, Path=IsMouseOver}" Value="True">
+                    <Setter TargetName="hint" Property="Animate" Value="True" />
+                    <Setter Property="Cursor" Value="Hand" />
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation 
+                                    Storyboard.TargetName="background"
+                                    Storyboard.TargetProperty="Background.Opacity" 
+                                    To="0.8"
+                                    Duration="0:0:0.3"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="background"
+                                    Storyboard.TargetProperty="Background.Opacity" 
+                                    From="0.8"
+                                    Duration="0:0:0.3"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </local:AnimatedControl.Template>
+    
 </local:AnimatedControl>

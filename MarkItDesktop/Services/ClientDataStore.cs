@@ -34,7 +34,8 @@ namespace MarkItDesktop.Services
                 {
                     Username = model.Username,
                     Email = model.Email,
-                    Token = model.Token
+                    Token = model.Token,
+                    FullName = model.FullName
                 });
 
             await _dbContext.SaveChangesAsync();
@@ -62,6 +63,7 @@ namespace MarkItDesktop.Services
             data.Token = model.Token;
             data.Email = model.Email;
             data.Username = model.Username;
+            data.FullName = model.FullName;
 
             _dbContext.Update(data);
 
