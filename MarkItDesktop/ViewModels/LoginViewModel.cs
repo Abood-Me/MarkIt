@@ -116,7 +116,7 @@ namespace MarkItDesktop.ViewModels
                 IsLoading = true;
                 if(await _authService.LoginAsync(Username, Password))
                 {
-                    await _application.UpdateUserInfoAsync();
+                    await _application.UpdateUIDataAsync();
                     _application.NavigateTo(ApplicationPage.MainPage);
                 }
                 

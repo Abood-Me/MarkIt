@@ -46,7 +46,7 @@ namespace MarkItDesktop.Services
             return _dbContext.Data.FirstOrDefaultAsync();
         }
 
-        public async Task<bool> HasStoredLogin()
+        public async Task<bool> HasStoredLoginAsync()
         {
             return await GetStoredLoginAsync() != null;
         }
@@ -68,6 +68,11 @@ namespace MarkItDesktop.Services
             _dbContext.Update(data);
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<string?> GetLoginTokenAsync()
+        {
+            return await _dbContext.Data.Select(u => u.Token).FirstOrDefaultAsync();
         }
     }
 }

@@ -62,10 +62,15 @@ namespace MarkItDesktop.Views.Controls
         {
             Duration duration = TimeSpan.FromMilliseconds(500);
 
+            bool hasConstraint = Direction switch {
+                SlideDirection.Left or SlideDirection.Right => ReadLocalValue(WidthProperty) != DependencyProperty.UnsetValue,
+                SlideDirection.Top or SlideDirection.Bottom => ReadLocalValue(HeightProperty) != DependencyProperty.UnsetValue,
+                _ => false
+            };
             if (value)
-                await this.SlideAndFadeInAsync(firstLoad ? TimeSpan.Zero : duration, Direction);
+                await this.SlideAndFadeInAsync(firstLoad ? TimeSpan.Zero : duration, Direction, hasConstraints: hasConstraint);
             else
-                await this.SlideAndFadeOutAsync(firstLoad ? TimeSpan.Zero : duration, Direction);
+                await this.SlideAndFadeOutAsync(firstLoad ? TimeSpan.Zero : duration, Direction, hasConstraints: hasConstraint);
 
         }
     }

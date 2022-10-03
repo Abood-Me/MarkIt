@@ -21,8 +21,8 @@ namespace MarkItDesktop.Helpers
         }
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (await _store.GetStoredLoginAsync() is ClientData data)
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", data.Token);
+            if (await _store.GetLoginTokenAsync() is string token)
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return await base.SendAsync(request, cancellationToken);
         }

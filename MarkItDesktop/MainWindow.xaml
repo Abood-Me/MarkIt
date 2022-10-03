@@ -13,16 +13,19 @@
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Border>
-            <controls:PageManager Page="{Binding CurrentPage, 
+        
+        <controls:PageManager Page="{Binding CurrentPage, 
             Converter={x:Static converters:PageValueConverter.Instance}}" />
-        </Border>
 
         <controls:SideMenu Grid.Column="1"
                            Animate="{Binding IsMenuOpen}"
                            Direction="Right"
-                           Width="300"
-                                  />
+                           Width="300" />
+
+        <controls:Settings Grid.ColumnSpan="2"
+                           Animate="{Binding IsSettingsOpen}"
+                           Direction="Bottom"
+                           />
 
     </Grid>
 </Window>

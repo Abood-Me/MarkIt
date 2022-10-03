@@ -67,6 +67,7 @@ namespace MarkItDesktop.Helpers
 
             sb.Begin(element);
             await Task.Delay(duration.TimeSpan);
+
         }
 
         public static async Task SlideAndFadeOutAsync(this FrameworkElement element, Duration duration, SlideDirection direction = SlideDirection.Bottom, double? offset = null, bool hasConstraints = true)
@@ -82,7 +83,7 @@ namespace MarkItDesktop.Helpers
             };
 
 
-            sb.AddFadeOut(duration, true)
+            sb.AddFadeOut(duration)
               .AddSlideOut(duration, direction, d, hasConstraints: hasConstraints);
 
             // Refactor this later so that it uses Task Completion Source and can cancel if another animation started ( Don't collapse if cancelled )
@@ -90,9 +91,10 @@ namespace MarkItDesktop.Helpers
             sb.Begin(element);
             await Task.Delay(duration.TimeSpan);
             // Check if another animation is playing on that element then doesn't collapse
-
+            await Task.Delay(1);
             if(element.Opacity == 0)
                 element.Visibility = Visibility.Collapsed;
+
         }
 
     }

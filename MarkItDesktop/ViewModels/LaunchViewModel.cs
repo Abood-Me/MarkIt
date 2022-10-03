@@ -34,7 +34,7 @@ namespace MarkItDesktop.ViewModels
             {
                 if (await _authService.VerifyLogin())
                 {
-                    await _application.UpdateUserInfoAsync();
+                    await _application.UpdateUIDataAsync();
                     _application.NavigateTo(ApplicationPage.MainPage);
                     return;
                 }

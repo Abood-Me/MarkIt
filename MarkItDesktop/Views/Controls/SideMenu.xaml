@@ -19,6 +19,9 @@
                         Background="{StaticResource ForegroundLightBrush}"
                         x:Name="background"
                         ClipToBounds="True">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding OpenSettingsCommand}" />
+                    </Border.InputBindings>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -32,11 +35,11 @@
                                FontFamily="{StaticResource JosefinLight}"
                                FontSize="{StaticResource FontSizeXSmall}"
                                Margin="5"/>
-                            <TextBlock Text="{Binding LoggedUser.Username}"
+                            <TextBlock Text="{Binding Username}"
                                Foreground="{StaticResource BackgroundBrush}"
                                FontFamily="{StaticResource JosefinBold}"
                                FontSize="{StaticResource FontSizeXLarge}"/>
-                            <TextBlock Text="{Binding LoggedUser.FullName}"
+                            <TextBlock Text="{Binding FullName}"
                                Foreground="{StaticResource BackgroundBrush}"/>
                         </StackPanel>
 

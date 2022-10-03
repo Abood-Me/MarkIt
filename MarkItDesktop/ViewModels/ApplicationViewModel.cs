@@ -1,16 +1,14 @@
 ﻿using MarkItDesktop.Data;
 using MarkItDesktop.Models;
 using MarkItDesktop.Services;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace MarkItDesktop.ViewModels
 {
-    public class ApplicationViewModel : BaseViewModel
+	public class ApplicationViewModel : BaseViewModel
     {
 		private ApplicationPage _currentPage;
         private ClientData? _loggedUser;
@@ -24,28 +22,14 @@ namespace MarkItDesktop.ViewModels
 			{
 				_currentPage = value;
 				OnPropertyChanged();
-                OnPropertyChanged(nameof(IsMenuOpen));
 
             }
         }
 
-		public ClientData? LoggedUser
+        public ApplicationViewModel(IClientDataStore clientStore)
 		{
-			get => _loggedUser;
-			set
-			{
-                _loggedUser = value;
-				OnPropertyChanged();
-			}
-		}
-
-
-		public bool IsMenuOpen => CurrentPage == ApplicationPage.MainPage;
-
-		public ApplicationViewModel(IClientDataStore clientStore)
-		{
-			CurrentPage = ApplicationPage.LaunchPage;
 			this._clientStore = clientStore ?? throw new ArgumentNullException(nameof(clientStore));
+			CurrentPage = ApplicationPage.LaunchPage;
 		}
 
 
@@ -54,10 +38,17 @@ namespace MarkItDesktop.ViewModels
 			CurrentPage = page;
 		}
 
-		public async Task UpdateUserInfoAsync()
-		{
-			LoggedUser = await _clientStore.GetStoredLoginAsync();
-		}
 
-	}
+		public async Task UpdateUIDataAsync()
+		{
+			SideMenuViewModel vm = App.AppHost.Services.GetRequiredService<SideMenuViewModel>();
+			ClientData? userData = await _clientStore.GetStoredLoginAsync();
+			if (userData is null)
+				return;
+
+            vm.IsMenuOpen = true;
+			vm.Username = userData.Username;
+			vm.FullName = userData.FullName;
+        }
+    }
 }

@@ -13,6 +13,9 @@ namespace MarkItDesktop.Helpers
         public static IServiceCollection AddApplicationViewModels(this IServiceCollection services)
         {
             services.AddSingleton<ApplicationViewModel>();
+            services.AddSingleton<SettingsViewModel>();
+            services.AddSingleton<SideMenuViewModel>();
+
             services.AddTransient<LaunchViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<RegisterViewModel>();
