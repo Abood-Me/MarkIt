@@ -25,6 +25,7 @@ namespace MarkItDesktop.ViewModels
 
         public ICommand CloseCommand { get; private set; }
         public ICommand OpenCommand { get; private set; }
+        public ICommand LogoutCommand { get; private set; }
 
         public SettingsViewModel(ApplicationViewModel application)
         {
@@ -32,6 +33,7 @@ namespace MarkItDesktop.ViewModels
 
             CloseCommand = new RelayCommand(Close);
             OpenCommand = new RelayCommand(Open);
+            LogoutCommand = new RelayCommand(Logout);
         }
 
         private void Close()
@@ -42,6 +44,12 @@ namespace MarkItDesktop.ViewModels
         private void Open()
         {
             IsSettingsOpen = true;
+        }
+
+        private async void Logout()
+        {
+            IsSettingsOpen = false;
+            await _application.LogoutAsync();
         }
     }
 }

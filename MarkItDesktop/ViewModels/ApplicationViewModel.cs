@@ -50,5 +50,16 @@ namespace MarkItDesktop.ViewModels
 			vm.Username = userData.Username;
 			vm.FullName = userData.FullName;
         }
+
+        public async Task LogoutAsync()
+        {
+            SideMenuViewModel vm = App.AppHost.Services.GetRequiredService<SideMenuViewModel>();
+			await _clientStore.ClearAllStoredLoginsAsync();
+
+            vm.IsMenuOpen = false;
+            vm.Username = string.Empty;
+            vm.FullName = string.Empty;
+			NavigateTo(ApplicationPage.LoginPage);
+        }
     }
 }
