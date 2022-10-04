@@ -76,14 +76,14 @@ namespace MarkItDesktop.Services
 
             HttpResponseMessage response = await _client.GetAsync("verify");
 
-            response.EnsureSuccessStatusCode();
-
             if(response.StatusCode == HttpStatusCode.Forbidden)
             {
                 await _store.ClearAllStoredLoginsAsync();
 
                 return false;
             }
+
+            response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadFromJsonAsync<APIResponseModel<LoginResponseModel>>();
             if (content is { } model && model.Succeeded)
