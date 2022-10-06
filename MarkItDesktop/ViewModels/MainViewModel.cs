@@ -41,7 +41,7 @@ namespace MarkItDesktop.ViewModels
 
         #region Commands
         
-        public ICommand AddCommand { get; private set; }
+        public ICommand AddCommand { get; }
 
         #endregion
 
@@ -120,7 +120,14 @@ namespace MarkItDesktop.ViewModels
                     IsCompleted = item.IsCompleted,
                     Text = item.Text
                 });
+        }
 
+        public async Task DeleteTodo(TodoItemViewModel item)
+        {
+            if(await _todoService.DeleteTodoAsync(item.Id))
+            {
+                TodoItems.Remove(item);
+            }
         }
     }
 }

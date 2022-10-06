@@ -5,15 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MarkItDesktop.Views"
              xmlns:converters="clr-namespace:MarkItDesktop.ValueConverters"
-             mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="500">
+             mc:Ignorable="d"  
+             d:DesignWidth="500">
     <Border
         Background="{StaticResource BackgroundDimBrush}"
-        Padding="5">
+        Padding="5"
+        x:Name="border">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <CheckBox Style="{DynamicResource TodoCheck}" VerticalAlignment="Top" 
                       HorizontalAlignment="Center"
@@ -22,6 +24,7 @@
 
             <TextBlock Grid.Column="1"
                        Margin="14"
+                       d:Text="Some really big todo"
                        Text="{Binding Text}"
                        FontFamily="{StaticResource JosefinLight}"
                        FontSize="{StaticResource FontSizeSmall}"
@@ -29,6 +32,43 @@
                        TextWrapping="Wrap"
                        TextDecorations="{Binding IsCompleted, Converter={x:Static converters:BooleanToTextDecorationConverter.Instance}, ConverterParameter={}}"
                        />
+            <StackPanel Grid.Column="2"
+                        VerticalAlignment="Center">
+                <StackPanel.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=border, Path=IsMouseOver}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="Opacity" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="Opacity" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <Button Padding="10"
+                        Margin="0"
+                        Command="{Binding DeleteCommand}">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource IconButton}" TargetType="Button">
+                            <Setter Property="Foreground" Value="{StaticResource InvalidBrush}" />
+                        </Style>
+                    </Button.Style>
+                    <Path Height="20" Margin="0" Stretch="Uniform" 
+                          Data="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" 
+                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Button>
+            </StackPanel>
 
         </Grid>
     </Border>

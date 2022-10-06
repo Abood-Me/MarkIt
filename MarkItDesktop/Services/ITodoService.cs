@@ -12,6 +12,7 @@ namespace MarkItDesktop.Services
         Task<IList<TodoResponseModel>?> GetTodosAsync();
 
         Task<TodoResponseModel?> CreateTodoAsync(TodoApiModel model);
+        Task<bool> DeleteTodoAsync(int id);
 
         Task<TodoResponseModel?> UpdateTodoAsync(int id, TodoApiModel model);
 

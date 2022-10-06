@@ -32,7 +32,6 @@ namespace MarkItDesktop.ViewModels
 			}
 		}
 
-
 		public string Text
 		{
 			get => _text;
@@ -57,12 +56,20 @@ namespace MarkItDesktop.ViewModels
 		}
 
 		#endregion
+
+		public ICommand DeleteCommand { get; }
+
 		public TodoItemViewModel(int id, MainViewModel mainViewModel)
 		{
 			Id = id;
 			_mainViewModel = mainViewModel;
+			DeleteCommand = new RelayCommand(Delete);
 		}
 
+		private async void Delete()
+		{
+			await _mainViewModel.DeleteTodo(this);
+		}
 
 	}
 }

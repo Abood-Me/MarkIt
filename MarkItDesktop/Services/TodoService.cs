@@ -3,6 +3,7 @@ using MarkItDesktop.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -38,6 +39,22 @@ namespace MarkItDesktop.Services
             }
 
             return null;
+        }
+
+        public async Task<bool> DeleteTodoAsync(int id)
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"{id}");
+
+            if (response.StatusCode == HttpStatusCode.NoContent)
+                return true;
+
+            APIResponseModel<TodoResponseModel>? responseModel = await response.Content.ReadFromJsonAsync<APIResponseModel<TodoResponseModel>>();
+
+            if (responseModel is { } content)
+            {
+                // Throw exception
+            }
+            return false;
         }
 
         public async Task<IList<TodoResponseModel>?> GetTodosAsync()
