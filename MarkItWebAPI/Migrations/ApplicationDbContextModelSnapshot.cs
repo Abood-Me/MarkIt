@@ -106,7 +106,7 @@ namespace MarkItWebAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Todo");
+                    b.ToTable("Todo", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

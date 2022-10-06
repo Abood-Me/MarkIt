@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MarkItDesktop.Data;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace MarkItDesktop.ViewModels
 {
@@ -33,6 +35,7 @@ namespace MarkItDesktop.ViewModels
 				OnPropertyChanged();
 			}
 		}
+
 		public bool IsMenuOpen
 		{
 			get => _isMenuOpen;
@@ -42,7 +45,6 @@ namespace MarkItDesktop.ViewModels
 				OnPropertyChanged();
 			}
 		}
-
 
 		public ICommand	OpenSettingsCommand { get; private set; }
 
@@ -55,6 +57,20 @@ namespace MarkItDesktop.ViewModels
 		{
 			App.AppHost.Services.GetRequiredService<SettingsViewModel>().IsSettingsOpen = true;
 		}
+
+		public void Update(ClientData data)
+		{
+            IsMenuOpen = true;
+            Username = data.Username;
+            FullName = data.FullName;
+        }
+
+		public void Clear()
+		{
+			IsMenuOpen = false;
+            Username = string.Empty;
+            FullName = string.Empty;
+        }
 
 	}
 }

@@ -49,6 +49,12 @@ namespace MarkItDesktop
                         })
                         .AddHttpMessageHandler<AuthorizationHandler>();
 
+                    services.AddHttpClient<IUserService, UserService>(client =>
+                    {
+                        client.BaseAddress = new Uri("https://localhost:5000/api/user/");
+                    })
+                    .AddHttpMessageHandler<AuthorizationHandler>();
+
                     services.AddSingleton<MainWindow>();
                     services.AddApplicationViewModels();
 

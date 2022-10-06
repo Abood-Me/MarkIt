@@ -51,4 +51,17 @@
     <Resource Include="Fonts\JosefinSans-Regular.ttf" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\Controls\PasswordSetting.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Controls\PasswordSetting.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

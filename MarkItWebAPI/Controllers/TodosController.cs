@@ -52,7 +52,7 @@ namespace MarkItWebAPI.Controllers
                 });
 
 
-            Todo todo = new Todo()
+            Todo todo = new()
             {
                 Text = model.Text,
                 IsCompleted = model.IsCompleted

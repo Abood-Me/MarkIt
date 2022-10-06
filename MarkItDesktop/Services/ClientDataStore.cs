@@ -70,9 +70,26 @@ namespace MarkItDesktop.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task UpdateUserInfo(UserApiModel model)
+        {
+            ClientData? data = await GetStoredLoginAsync();
+            if (data is null)
+                return;
+
+            data.Email = model.Email;
+            data.Username = model.Username;
+            data.FullName = model.FullName;
+
+            _dbContext.Update(data);
+
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<string?> GetLoginTokenAsync()
         {
             return await _dbContext.Data.Select(u => u.Token).FirstOrDefaultAsync();
         }
+
+
     }
 }

@@ -4,16 +4,14 @@ using MarkItDesktop.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace MarkItDesktop.ViewModels
 {
 	public class ApplicationViewModel : BaseViewModel
-    {
+	{
 		private ApplicationPage _currentPage;
-        private ClientData? _loggedUser;
 
-        private readonly IClientDataStore _clientStore;
+		private readonly IClientDataStore _clientStore;
 
 		public ApplicationPage CurrentPage
 		{
@@ -23,10 +21,10 @@ namespace MarkItDesktop.ViewModels
 				_currentPage = value;
 				OnPropertyChanged();
 
-            }
-        }
+			}
+		}
 
-        public ApplicationViewModel(IClientDataStore clientStore)
+		public ApplicationViewModel(IClientDataStore clientStore)
 		{
 			this._clientStore = clientStore ?? throw new ArgumentNullException(nameof(clientStore));
 			CurrentPage = ApplicationPage.LaunchPage;
@@ -41,25 +39,25 @@ namespace MarkItDesktop.ViewModels
 
 		public async Task UpdateUIDataAsync()
 		{
-			SideMenuViewModel vm = App.AppHost.Services.GetRequiredService<SideMenuViewModel>();
+
 			ClientData? userData = await _clientStore.GetStoredLoginAsync();
 			if (userData is null)
 				return;
 
-            vm.IsMenuOpen = true;
-			vm.Username = userData.Username;
-			vm.FullName = userData.FullName;
-        }
+			SideMenuViewModel sideMenuViewModel = App.AppHost.Services.GetRequiredService<SideMenuViewModel>();
+			SettingsViewModel settingsViewModel = App.AppHost.Services.GetRequiredService<SettingsViewModel>();
 
-        public async Task LogoutAsync()
-        {
-            SideMenuViewModel vm = App.AppHost.Services.GetRequiredService<SideMenuViewModel>();
+			sideMenuViewModel.Update(userData);
+			settingsViewModel.Update(userData);
+		}
+
+		public async Task LogoutAsync()
+		{
+			SideMenuViewModel sideMenuViewModel = App.AppHost.Services.GetRequiredService<SideMenuViewModel>();
 			await _clientStore.ClearAllStoredLoginsAsync();
+			sideMenuViewModel.Clear();
 
-            vm.IsMenuOpen = false;
-            vm.Username = string.Empty;
-            vm.FullName = string.Empty;
 			NavigateTo(ApplicationPage.LoginPage);
-        }
-    }
+		}
+	}
 }

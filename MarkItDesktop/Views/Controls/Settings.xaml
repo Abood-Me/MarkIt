@@ -10,6 +10,7 @@
           >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -32,8 +33,24 @@
                        FontFamily="{StaticResource JosefinLight}"
                        FontSize="{StaticResource FontSizeXLarge}"/>
         </Grid>
-
-        <Grid Grid.Row="1"
+        <TextBlock Foreground="{StaticResource InvalidBrush}"
+                   FontFamily="{StaticResource JosefinRegular}"
+                   FontSize="{StaticResource FontSizeSmall}"
+                   Text="{Binding ErrorMessage}"
+                   HorizontalAlignment="Center"
+                   TextWrapping="Wrap"
+                   Grid.Row="1">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Grid Grid.Row="2"
               Margin="40 0 40 40">
             <Border Padding="30">
                 <Grid Grid.IsSharedSizeScope="True">
@@ -44,13 +61,16 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Vertical">
-                <!-- TODO -->
+                        <local:TextSetting DataContext="{Binding UsernameViewModel}" />
+                        <local:TextSetting DataContext="{Binding FullNameViewModel}"  />
+                        <local:TextSetting DataContext="{Binding EmailViewModel}"  />
+                        <local:PasswordSetting DataContext="{Binding PasswordViewModel}" />
                     </StackPanel>
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
-                            <ColumnDefinition  SharedSizeGroup="Action" />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="2"
                                 VerticalAlignment="Bottom"
