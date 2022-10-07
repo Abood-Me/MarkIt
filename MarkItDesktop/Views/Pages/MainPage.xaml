@@ -12,13 +12,17 @@
       d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.InputBindings>
+            <KeyBinding Key="Esc" Command="{Binding ExitEditingCommand}" />
+        </Grid.InputBindings>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
         <local:TodoList Padding="10" />
-        
+        <controls:EditHint Animate="{Binding IsEditing}"/>
+
         <Border Background="{StaticResource PrimaryBrush}"
                 Grid.Row="1"
                 Padding="15">
@@ -32,8 +36,9 @@
                     Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                     Margin="5 0"
                     Padding="10 12"
-                    FontSize="{StaticResource FontSizeSmall}"/>
-                
+                    FontSize="{StaticResource FontSizeSmall}"
+                    x:Name="todoInput"/>
+
                 <Button Content="Add"
                         Grid.Column="1"
                         FontFamily="{StaticResource JosefinRegular}"

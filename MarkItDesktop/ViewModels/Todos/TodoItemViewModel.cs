@@ -15,7 +15,8 @@ namespace MarkItDesktop.ViewModels
 		private string _text = string.Empty;
 		private bool _isCompleted;
 		private bool _newItem;
-		private readonly MainViewModel _mainViewModel;
+        private bool _isHighlighted;
+        private readonly MainViewModel _mainViewModel;
 
 		#endregion
 
@@ -52,6 +53,16 @@ namespace MarkItDesktop.ViewModels
 				OnPropertyChanged();
 				_mainViewModel.UpdateTodo(this);
 					// TODO: Sync all todos every now and then by marking changed ones as dirty
+			}
+		}
+
+		public bool IsHighlighted
+		{
+			get => _isHighlighted;
+			set
+			{
+				_isHighlighted = value;
+				OnPropertyChanged();
 			}
 		}
 

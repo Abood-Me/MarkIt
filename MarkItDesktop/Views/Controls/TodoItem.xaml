@@ -5,12 +5,51 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MarkItDesktop.Views"
              xmlns:converters="clr-namespace:MarkItDesktop.ValueConverters"
+             xmlns:controls="clr-namespace:MarkItDesktop.Views.Controls"
              mc:Ignorable="d"  
              d:DesignWidth="500">
-    <Border
-        Background="{StaticResource BackgroundDimBrush}"
-        Padding="5"
-        x:Name="border">
+    <Border Background="{StaticResource BackgroundDimBrush}"
+            Padding="5"
+            x:Name="border"
+            RenderTransformOrigin="0.5 0.5">
+        <Border.RenderTransform>
+            <ScaleTransform />
+        </Border.RenderTransform>
+        <Border.Style>
+            <Style>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.25"
+                                                     To="0.95"
+                                                     Storyboard.TargetProperty="RenderTransform.ScaleX" />
+                                    <DoubleAnimation Duration="0:0:0.25"
+                                                     To="0.95"
+                                                     Storyboard.TargetProperty="RenderTransform.ScaleY" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.250"
+                                                    From="0.95"
+                                                    Storyboard.TargetProperty="Opacity" />
+                                    <DoubleAnimation Duration="0:0:0.250"
+                                                     From="0.95"
+                                                     Storyboard.TargetProperty="RenderTransform.ScaleX" />
+                                    <DoubleAnimation Duration="0:0:0.250"
+                                                     From="0.95"
+                                                     Storyboard.TargetProperty="RenderTransform.ScaleY" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -43,7 +82,9 @@
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="Opacity" />
+                                            <DoubleAnimation Duration="0:0:0.2" 
+                                                             To="1" 
+                                                             Storyboard.TargetProperty="Opacity" />
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.EnterActions>

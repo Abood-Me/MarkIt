@@ -27,6 +27,23 @@ namespace MarkItDesktop.ViewModels
         #endregion
 
         #region Public properties
+        private TodoItemViewModel? CurrentlyEditing
+        {
+            get => _currentlyEditing;
+            set
+            {
+                if (_currentlyEditing == value)
+                    return;
+
+                if(_currentlyEditing is TodoItemViewModel oldVm)
+                    oldVm.IsHighlighted = false;
+
+                _currentlyEditing = value;
+
+                if (_currentlyEditing is TodoItemViewModel newVm)
+                    newVm.IsHighlighted = true;
+            }
+        }
 
         public string Text
         {
@@ -43,16 +60,15 @@ namespace MarkItDesktop.ViewModels
             get => _isEditing;
             set
             {
-                
-                _isEditing = value && _currentlyEditing is not null;
+                _isEditing = value && CurrentlyEditing is not null;
                 if(_isEditing)
                 {
-                    Text = _currentlyEditing!.Text;
+                    Text = CurrentlyEditing!.Text;
                 }
                 else
                 {
                     Text = string.Empty;
-                    _currentlyEditing = null;
+                    CurrentlyEditing = null;
                 }
 
                 OnPropertyChanged();
@@ -65,6 +81,7 @@ namespace MarkItDesktop.ViewModels
 
         public ICommand AddCommand { get; }
         public ICommand EditCommand { get; }
+        public ICommand ExitEditingCommand { get; }
 
         #endregion
 
@@ -72,6 +89,7 @@ namespace MarkItDesktop.ViewModels
         {
             AddCommand = new RelayCommand(AddTodo);
             EditCommand = new RelayCommand(EditTodo);
+            ExitEditingCommand = new RelayCommand(ExitEditing);
             _todoService = todoService;
         }
         public MainViewModel()
@@ -106,15 +124,19 @@ namespace MarkItDesktop.ViewModels
             }
         }
 
+        private void ExitEditing()
+        {
+            IsEditing = false;
+        }
+
         private void EditTodo()
         {
-
             if (string.IsNullOrWhiteSpace(Text) || !IsEditing)
                 return;
 
-            _currentlyEditing!.Text = Text;
+            CurrentlyEditing!.Text = Text;
             // Should pass TodoApiModel instead
-            UpdateTodo(_currentlyEditing!);
+            UpdateTodo(CurrentlyEditing!);
             IsEditing = false;
         }
 
@@ -137,14 +159,20 @@ namespace MarkItDesktop.ViewModels
 
             if (!_ignoreChanges)
             {
-                _ignoreChanges = true;
-                TodoItems.Add(new(todo.Id, this)
+                try
                 {
-                    Text = todo.Text,
-                    IsCompleted = todo.IsCompleted,
-                    NewItem = true
-                });
-                _ignoreChanges = false;
+                    _ignoreChanges = true;
+                    TodoItems.Add(new(todo.Id, this)
+                    {
+                        Text = todo.Text,
+                        IsCompleted = todo.IsCompleted,
+                        NewItem = true
+                    });
+                }
+                finally
+                {
+                    _ignoreChanges = false;
+                }
             }
         }
         public async void UpdateTodo(TodoItemViewModel item)
@@ -164,7 +192,7 @@ namespace MarkItDesktop.ViewModels
         {
             if(await _todoService.DeleteTodoAsync(item.Id))
             {
-                if (item == _currentlyEditing)
+                if (item == CurrentlyEditing)
                     IsEditing = false;
 
                 TodoItems.Remove(item);
@@ -173,7 +201,7 @@ namespace MarkItDesktop.ViewModels
 
         public void EditTodo(TodoItemViewModel item)
         {
-            _currentlyEditing = item;
+            CurrentlyEditing = item;
             IsEditing = true;
         }
     }
