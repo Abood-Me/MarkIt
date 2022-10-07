@@ -2,6 +2,7 @@
       x:TypeArguments="vm:MainViewModel"
       xmlns:vm="clr-namespace:MarkItDesktop.ViewModels"
       xmlns:controls="clr-namespace:MarkItDesktop.Views.Controls"
+      xmlns:converters="clr-namespace:MarkItDesktop.ValueConverters"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -32,6 +33,7 @@
                     Margin="5 0"
                     Padding="10 12"
                     FontSize="{StaticResource FontSizeSmall}"/>
+                
                 <Button Content="Add"
                         Grid.Column="1"
                         FontFamily="{StaticResource JosefinRegular}"
@@ -39,7 +41,19 @@
                         Margin="5 0"
                         Padding="20 10"
                         Command="{Binding AddCommand}"
+                        Visibility="{Binding IsEditing, Converter={x:Static converters:BooleanToVisibilityConverter.Instance}, ConverterParameter=n}"
                         IsDefault="True"/>
+                
+                <Button Content="Edit"
+                        Grid.Column="1"
+                        FontFamily="{StaticResource JosefinRegular}"
+                        FontSize="{StaticResource FontSizeSmall}"
+                        Margin="5 0"
+                        Padding="20 10"
+                        Command="{Binding EditCommand}"
+                        IsDefault="True"
+                        Visibility="{Binding IsEditing, Converter={x:Static converters:BooleanToVisibilityConverter.Instance}}"
+                       />
 
             </Grid>
             

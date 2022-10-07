@@ -58,17 +58,24 @@ namespace MarkItDesktop.ViewModels
 		#endregion
 
 		public ICommand DeleteCommand { get; }
+		public ICommand EditCommand { get; }
 
 		public TodoItemViewModel(int id, MainViewModel mainViewModel)
 		{
 			Id = id;
 			_mainViewModel = mainViewModel;
 			DeleteCommand = new RelayCommand(Delete);
+			EditCommand = new RelayCommand(Edit);
 		}
 
 		private async void Delete()
 		{
 			await _mainViewModel.DeleteTodo(this);
+		}
+
+		private void Edit()
+		{
+			_mainViewModel.EditTodo(this);
 		}
 
 	}

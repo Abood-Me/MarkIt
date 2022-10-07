@@ -5,6 +5,7 @@
     <Color x:Key="PrimaryLightColor">#1155CC</Color>
     <Color x:Key="PrimaryDarkColor">#0022AA</Color>
     <Color x:Key="InvalidColor">#FF4040</Color>
+    <Color x:Key="WarningColor">#cf9100</Color>
     <Color x:Key="BackgroundColor">#FFF</Color>
     <Color x:Key="BackgroundDimColor">#CCC</Color>
     <Color x:Key="BackgroundDarkColor">#999</Color>
@@ -15,6 +16,7 @@
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />
     <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDarkColor}" />
     <SolidColorBrush x:Key="InvalidBrush" Color="{StaticResource InvalidColor}" />
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
     <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource ForegroundColor}" />
     <SolidColorBrush x:Key="ForegroundLightBrush" Color="{StaticResource ForegroundLightColor}" />
     <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}" />

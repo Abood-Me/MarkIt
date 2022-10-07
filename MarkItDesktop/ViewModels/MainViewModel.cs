@@ -18,13 +18,15 @@ namespace MarkItDesktop.ViewModels
         #region Private members
 
         private string _text = string.Empty;
-        private readonly ITodoService _todoService;
+        private bool _isEditing;
         private bool _ignoreChanges;
+        private TodoItemViewModel? _currentlyEditing;
+
+        private readonly ITodoService _todoService;
 
         #endregion
 
         #region Public properties
-
 
         public string Text
         {
@@ -36,18 +38,40 @@ namespace MarkItDesktop.ViewModels
             }
         }
 
+        public bool IsEditing
+        {
+            get => _isEditing;
+            set
+            {
+                
+                _isEditing = value && _currentlyEditing is not null;
+                if(_isEditing)
+                {
+                    Text = _currentlyEditing!.Text;
+                }
+                else
+                {
+                    Text = string.Empty;
+                    _currentlyEditing = null;
+                }
+
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 
         #region Commands
-        
+
         public ICommand AddCommand { get; }
+        public ICommand EditCommand { get; }
 
         #endregion
 
         public MainViewModel(ITodoService todoService)
         {
             AddCommand = new RelayCommand(AddTodo);
+            EditCommand = new RelayCommand(EditTodo);
             _todoService = todoService;
         }
         public MainViewModel()
@@ -82,9 +106,21 @@ namespace MarkItDesktop.ViewModels
             }
         }
 
-        public async void AddTodo()
+        private void EditTodo()
         {
-            if (string.IsNullOrWhiteSpace(Text))
+
+            if (string.IsNullOrWhiteSpace(Text) || !IsEditing)
+                return;
+
+            _currentlyEditing!.Text = Text;
+            // Should pass TodoApiModel instead
+            UpdateTodo(_currentlyEditing!);
+            IsEditing = false;
+        }
+
+        private async void AddTodo()
+        {
+            if (string.IsNullOrWhiteSpace(Text) || IsEditing)
                 return;
 
             TodoResponseModel? todo = await _todoService.CreateTodoAsync(
@@ -98,6 +134,7 @@ namespace MarkItDesktop.ViewModels
 
             if (todo is null)
                 return;
+
             if (!_ignoreChanges)
             {
                 _ignoreChanges = true;
@@ -110,7 +147,6 @@ namespace MarkItDesktop.ViewModels
                 _ignoreChanges = false;
             }
         }
-
         public async void UpdateTodo(TodoItemViewModel item)
         {
             if (_ignoreChanges) return;
@@ -120,14 +156,25 @@ namespace MarkItDesktop.ViewModels
                     IsCompleted = item.IsCompleted,
                     Text = item.Text
                 });
+
+            // TODO: Update viewmodel here
         }
 
         public async Task DeleteTodo(TodoItemViewModel item)
         {
             if(await _todoService.DeleteTodoAsync(item.Id))
             {
+                if (item == _currentlyEditing)
+                    IsEditing = false;
+
                 TodoItems.Remove(item);
             }
+        }
+
+        public void EditTodo(TodoItemViewModel item)
+        {
+            _currentlyEditing = item;
+            IsEditing = true;
         }
     }
 }
