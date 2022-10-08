@@ -15,7 +15,6 @@
         </Grid.RowDefinitions>
 
         <Grid Margin="40">
-            <!-- Should have a cross icon instead -->
             <Button VerticalAlignment="Center" 
                     HorizontalAlignment="Right"
                     Command="{Binding CloseCommand}"
@@ -52,46 +51,51 @@
         </TextBlock>
         <Grid Grid.Row="2"
               Margin="40 0 40 40">
+            
             <Border Padding="30">
-                <Grid Grid.IsSharedSizeScope="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Hidden">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Vertical">
-                        <local:TextSetting DataContext="{Binding UsernameViewModel}" />
-                        <local:TextSetting DataContext="{Binding FullNameViewModel}"  />
-                        <local:TextSetting DataContext="{Binding EmailViewModel}"  />
-                        <local:PasswordSetting DataContext="{Binding PasswordViewModel}" />
-                    </StackPanel>
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="2"
+
+                        <StackPanel Orientation="Vertical">
+                            <local:TextSetting DataContext="{Binding UsernameViewModel}" />
+                            <local:TextSetting DataContext="{Binding FullNameViewModel}"  />
+                            <local:TextSetting DataContext="{Binding EmailViewModel}"  />
+                            <local:PasswordSetting DataContext="{Binding PasswordViewModel}" />
+                        </StackPanel>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="2"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding LogoutCommand}">
-                            <Button.Style>
-                                <Style BasedOn="{StaticResource IconButton}" TargetType="Button">
-                                    <Setter Property="Foreground" Value="{StaticResource InvalidBrush}" />
-                                </Style>
-                            </Button.Style>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Logout" 
+                                <Button.Style>
+                                    <Style BasedOn="{StaticResource IconButton}" TargetType="Button">
+                                        <Setter Property="Foreground" Value="{StaticResource InvalidBrush}" />
+                                    </Style>
+                                </Button.Style>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Logout" 
                                            VerticalAlignment="Center"
                                            Margin="5 0"/>
-                                <Path Data="M5.9375 2.28571C6.59434 2.28571 7.125 1.775 7.125 1.14286C7.125 0.510714 6.59434 0 5.9375 0H3.5625C1.5957 0 0 1.53571 0 3.42857V12.5714C0 14.4643 1.5957 16 3.5625 16H5.9375C6.59434 16 7.125 15.4893 7.125 14.8571C7.125 14.225 6.59434 13.7143 5.9375 13.7143H3.5625C2.90566 13.7143 2.375 13.2036 2.375 12.5714V3.42857C2.375 2.79643 2.90566 2.28571 3.5625 2.28571H5.9375ZM18.7217 8.62143C18.8998 8.46071 19 8.23571 19 8C19 7.76429 18.8998 7.53929 18.7217 7.37857L13.3779 2.52143C13.1182 2.28571 12.7396 2.22143 12.4131 2.35714C12.0865 2.49286 11.875 2.80357 11.875 3.14286V5.71429H7.125C6.46816 5.71429 5.9375 6.225 5.9375 6.85714V9.14286C5.9375 9.775 6.46816 10.2857 7.125 10.2857H11.875V12.8571C11.875 13.2 12.0865 13.5071 12.4131 13.6429C12.7396 13.7786 13.1182 13.7143 13.3779 13.4786L18.7217 8.62143Z" 
+                                    <Path Data="M5.9375 2.28571C6.59434 2.28571 7.125 1.775 7.125 1.14286C7.125 0.510714 6.59434 0 5.9375 0H3.5625C1.5957 0 0 1.53571 0 3.42857V12.5714C0 14.4643 1.5957 16 3.5625 16H5.9375C6.59434 16 7.125 15.4893 7.125 14.8571C7.125 14.225 6.59434 13.7143 5.9375 13.7143H3.5625C2.90566 13.7143 2.375 13.2036 2.375 12.5714V3.42857C2.375 2.79643 2.90566 2.28571 3.5625 2.28571H5.9375ZM18.7217 8.62143C18.8998 8.46071 19 8.23571 19 8C19 7.76429 18.8998 7.53929 18.7217 7.37857L13.3779 2.52143C13.1182 2.28571 12.7396 2.22143 12.4131 2.35714C12.0865 2.49286 11.875 2.80357 11.875 3.14286V5.71429H7.125C6.46816 5.71429 5.9375 6.225 5.9375 6.85714V9.14286C5.9375 9.775 6.46816 10.2857 7.125 10.2857H11.875V12.8571C11.875 13.2 12.0865 13.5071 12.4131 13.6429C12.7396 13.7786 13.1182 13.7143 13.3779 13.4786L18.7217 8.62143Z" 
                                       Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                                       VerticalAlignment="Center"
                                       Margin="5 0"/>
-                            </StackPanel>
-                        </Button>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </ScrollViewer>
             </Border>
         </Grid>
     </Grid>

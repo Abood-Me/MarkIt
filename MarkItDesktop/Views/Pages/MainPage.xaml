@@ -19,7 +19,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
         <local:TodoList Padding="10" />
         <controls:EditHint Animate="{Binding IsEditing}"/>
 

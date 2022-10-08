@@ -9,7 +9,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MarkItDesktop.Views"
       mc:Ignorable="d">
-    <Border>
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
         <StackPanel                    
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
@@ -75,5 +76,5 @@
                     HorizontalAlignment="Center"
                     Command="{Binding RegisterCommand}"/>
         </StackPanel>
-    </Border>
+    </ScrollViewer>
 </local:BasePage>
