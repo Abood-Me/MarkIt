@@ -21,5 +21,27 @@ namespace MarkItDesktop.Views.Controls
             DependencyProperty.Register("PlaceHolder", typeof(string), typeof(TextBox), new PropertyMetadata(string.Empty));
 
 
+
+        public bool ForceFocus
+        {
+            get { return (bool)GetValue(ForceFocusProperty); }
+            set { SetValue(ForceFocusProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ForceFocus.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ForceFocusProperty =
+            DependencyProperty.Register("ForceFocus", typeof(bool), typeof(TextBox), new PropertyMetadata(false, null, CoerceTextFocus));
+
+        private static object CoerceTextFocus(DependencyObject d, object value)
+        {
+            TextBox textBox = (TextBox)d;
+            if ((bool)value)
+            {
+                textBox.Focus();
+                textBox.CaretIndex = textBox.Text.Length;
+            }
+
+            return value;
+        }
     }
 }

@@ -37,7 +37,7 @@
                     Margin="5 0"
                     Padding="10 12"
                     FontSize="{StaticResource FontSizeSmall}"
-                    x:Name="todoInput"/>
+                    ForceFocus="{Binding IsEditing}"/>
 
                 <Button Content="Add"
                         Grid.Column="1"

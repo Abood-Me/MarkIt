@@ -184,8 +184,6 @@ namespace MarkItDesktop.ViewModels
                     IsCompleted = item.IsCompleted,
                     Text = item.Text
                 });
-
-            // TODO: Update viewmodel here
         }
 
         public async Task DeleteTodo(TodoItemViewModel item)
