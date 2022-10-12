@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarkItDesktop", "MarkItDesktop\MarkItDesktop.csproj", "{0BDF9192-F0A4-4001-BBC7-C5F504FF02E8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarkItWebAPI", "MarkItWebAPI\MarkItWebAPI.csproj", "{08B1D6FC-7D81-4428-9A41-C77DD7312253}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{46118F3D-5E9F-44E4-AC8E-FCB105CBDB5D}"
@@ -12,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkIt.Common", "MarkIt.Common\MarkIt.Common.csproj", "{672F44D5-8298-4E8B-8BC8-1A9F0ED31805}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarkIt.Common", "MarkIt.Common\MarkIt.Common.csproj", "{672F44D5-8298-4E8B-8BC8-1A9F0ED31805}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +18,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0BDF9192-F0A4-4001-BBC7-C5F504FF02E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BDF9192-F0A4-4001-BBC7-C5F504FF02E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BDF9192-F0A4-4001-BBC7-C5F504FF02E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BDF9192-F0A4-4001-BBC7-C5F504FF02E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08B1D6FC-7D81-4428-9A41-C77DD7312253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08B1D6FC-7D81-4428-9A41-C77DD7312253}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08B1D6FC-7D81-4428-9A41-C77DD7312253}.Release|Any CPU.ActiveCfg = Release|Any CPU
