@@ -40,18 +40,18 @@ namespace MarkItDesktop
                     services.AddSingleton<IClientDataStore, ClientDataStore>();
                     services.AddHttpClient<IAuthService, AuthService>(client =>
                         {
-                            client.BaseAddress = new Uri("https://localhost:5000/api/auth/");
+                            client.BaseAddress = new Uri("https://markit-webapi.herokuapp.com/api/auth/");
                         })
                         .AddHttpMessageHandler<AuthorizationHandler>();
                     services.AddHttpClient<ITodoService, TodoService>(client =>
                         {
-                            client.BaseAddress = new Uri("https://localhost:5000/api/todos/");
+                            client.BaseAddress = new Uri("https://markit-webapi.herokuapp.com/api/todos/");
                         })
                         .AddHttpMessageHandler<AuthorizationHandler>();
 
                     services.AddHttpClient<IUserService, UserService>(client =>
                     {
-                        client.BaseAddress = new Uri("https://localhost:5000/api/user/");
+                        client.BaseAddress = new Uri("https://markit-webapi.herokuapp.com/api/user/");
                     })
                     .AddHttpMessageHandler<AuthorizationHandler>();
 
