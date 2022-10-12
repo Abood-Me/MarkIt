@@ -27,12 +27,9 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-        
-    - name: Restore solution
-      run: dotnet restore ${{ env.Solution_Name }}
     
     - name: Publish Application
-      run: dotnet publish ${{ env.Wap_Project_Directory }} -r win-x64 -c Release --self-contained --no-restore
+      run: dotnet publish ${{ env.Wap_Project_Directory }} -r win-x64 -c Release --self-contained
       
     - name: Compress Application Files
       run: 7z a Release.zip ${{ env.Wap_Project_Directory }}\bin\Release\net6.0-windows\win-x64\publish
