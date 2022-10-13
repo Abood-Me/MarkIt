@@ -26,8 +26,6 @@ namespace MarkItDesktop
                 })
                 .ConfigureAppConfiguration((context,config) =>
                 {
-                    
-
                 })
                 .ConfigureServices((context,services) =>
                 {
