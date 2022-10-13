@@ -66,7 +66,6 @@ namespace MarkItDesktop
             // Request the main window as a singleton
             MainWindow = AppHost.Services.GetRequiredService<MainWindow>();
             MainWindow.Visibility = Visibility.Visible;
-
         }
     }
 }
