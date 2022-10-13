@@ -3,10 +3,11 @@ name: Publish Desktop Application
 on:
   push:
     tags:
-    - v*
+      - v*
+  
   pull_request:
     tags: 
-    - v*
+      - v*
     
 jobs:
 
@@ -35,13 +36,12 @@ jobs:
       run: dotnet publish ${{ env.Wap_Project_Directory }} -r win-x64 -c Release --self-contained
       
     - name: Compress Application Files
-      run: 7z a Release.zip ${{ env.Wap_Project_Directory }}\bin\Release\net6.0-windows\win-x64\publish
+      run: 7z a Release.zip .\${{ env.Wap_Project_Directory }}\bin\Release\net6.0-windows\win-x64\publish\*
       
     - name: Upload archive to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: Release.zip
-        asset_name: MarkIt $tag
+        asset_name: MarkIt $tag.zip
         tag: ${{ github.ref }}
-        overwrite: true
