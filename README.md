@@ -1,5 +1,6 @@
 # MarkIt
 MarkIt is a quick solution to save your ideas and retrieve them.
+![Mark It](markit.png)
 ## Technologies
 This project is solely built on dotnet frameworks
 * WPF for Desktop
