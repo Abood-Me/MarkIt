@@ -57,10 +57,8 @@ namespace MarkItDesktop
 
                     services.AddSingleton<MainWindow>();
                     services.AddApplicationViewModels();
-
                 })
                 .Build();
-
         }
 
         protected override void OnStartup(StartupEventArgs e)
